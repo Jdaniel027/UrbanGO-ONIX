@@ -78,4 +78,4 @@ Su objetivo es evitar reinstalar dependencias que ya se determinó que no aporta
 | redux                   | Complejidad innecesaria para el alcance actual | Context API         |
 | native-base             | Peso elevado y estilos poco flexibles          | Componentes propios |
 
-Una dependencia descartada no debe reinstalarse sin volver a justificarla y documentarla.
+> Una dependencia descartada no debe reinstalarse sin volver a justificarla y documentarla.
