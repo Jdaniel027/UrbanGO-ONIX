@@ -4,7 +4,8 @@ Este archivo documenta **todas las librerías instaladas en el proyecto**, su pr
 
 > Este archivo es obligatorio.  
 > Ninguna dependencia puede agregarse al proyecto sin documentarse aquí.
-> Para una visión general del proyecto, ver el [README.md](./README.md)
+
+Para una visión general del proyecto, ver el [README.md](./README.md)
 
 ## Relación con package.json
 
