@@ -22,3 +22,9 @@ El objetivo principal es optimizar el tiempo y la experiencia de traslado dentro
 Este proyecto sigue reglas y convenciones específicas para el trabajo en equipo.
 
 Consulta [CONTRIBUTING.md](./CONTRIBUTING.md) antes de realizar cambios.
+
+## Dependencias
+Este proyecto documenta todas las librerías utilizadas.
+
+[Ver DEPENDENCIES.md](./DEPENDENCIES.md)
+
