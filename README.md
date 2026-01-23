@@ -15,6 +15,9 @@ El objetivo principal es optimizar el tiempo y la experiencia de traslado dentro
 - TypeScript
 - Node.js
 
+## Convenciones del equipo
+Para mantener el proyecto ordenado, escalable y evitar conflictos, todas deben seguir las siguientes reglas.
+
 ## Estructura del proyecto
 El proyecto utiliza **Expo Router** y una separación clara entre navegación y lógica de negocio.
 
@@ -78,7 +81,6 @@ UrbanGO/
 ## Convención de commits (recomendado)
 Para mantener un historial de cambios claro y entendible, se debe usar el siguiente formato:
 
-
 ### Tipos de commit permitidos
 - **feat**: nueva funcionalidad
 - **fix**: corrección de errores
@@ -90,10 +92,6 @@ Para mantener un historial de cambios claro y entendible, se debe usar el siguie
 ```bash
 git commit -m "feat: agregar pantalla de login"
 ```
-
-
-## Convenciones del equipo
-Para mantener el proyecto ordenado, escalable y evitar conflictos, todas deben seguir las siguientes reglas.
 
 ### Uso obligatorio de alias en imports
 No usar imports relativos largos:
