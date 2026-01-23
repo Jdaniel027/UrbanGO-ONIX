@@ -121,10 +121,15 @@ import { Button } from '@/src/components';
 | Tipos       | PascalCase     | `User.ts`            |
 | Utilidades  | camelCase      | `formatDate.ts`      |
 
-## Dependencias
+## Dependencias del proyecto
+Este proyecto documenta de forma explícita todas las librerías utilizadas, su propósito y las reglas para agregar nuevas dependencias.
 
-- Toda nueva librería debe ser documentada
-- Indicar para qué se usa y por qué se eligió
-- No instalar librerías sin justificación
+- Toda dependencia instalada debe documentarse en `DEPENDENCIES.md`
+- No se permite instalar librerías sin justificar su uso
+- `package.json` y `DEPENDENCIES.md` deben mantenerse sincronizados
+  
+**Listado completo y reglas de uso:**  
+[Ver DEPENDENCIES.md](./DEPENDENCIES.md)
 
-Las dependencias deben documentarse en `DEPENDENCIES.md`.
+> Ninguna dependencia puede agregarse al proyecto sin ser documentada.
+

@@ -5,6 +5,8 @@ Este archivo documenta **todas las librerías instaladas en el proyecto**, su pr
 > Este archivo es obligatorio.  
 > Ninguna dependencia puede agregarse al proyecto sin documentarse aquí.
 
+Para una visión general del proyecto, ver el [README.md](./README.md)
+
 ## Relación con package.json
 
 - `package.json` fuente técnica (qué está instalado)
@@ -48,7 +50,6 @@ Si una librería existe en `package.json` pero no aquí, **debe documentarse**.
 | eslint     | Reglas de código |
 
 ## ¿Cómo agregar una nueva dependencia?
-
 ### Paso 1: Evaluación
 
 - Verificar que no exista ya una solución en el proyecto
@@ -61,8 +62,11 @@ Si una librería existe en `package.json` pero no aquí, **debe documentarse**.
 npm install nombre-libreria
 ```
 
-## Dependencias descartadas
+### Paso 3: Documentación (obligatorio)
+Agregar la dependencia a la sección correspondiente de este archivo
+Indicar propósito y área de uso
 
+## Dependencias descartadas
 Esta sección documenta librerías que fueron evaluadas pero no utilizadas, junto con el motivo de su descarte.
 Su objetivo es evitar reinstalar dependencias que ya se determinó que no aportan valor al proyecto.
 
