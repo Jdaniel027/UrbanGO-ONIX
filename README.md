@@ -16,24 +16,24 @@ El objetivo principal es optimizar el tiempo y la experiencia de traslado dentro
 - Node.js
 
 ## Convenciones del equipo
-Para mantener el proyecto ordenado, escalable y evitar conflictos, todas deben seguir las siguientes reglas.
+Para mantener el proyecto ordenado, escalable y evitar conflictos, todos deben seguir las siguientes reglas.
 
 ## Estructura del proyecto
 El proyecto utiliza **Expo Router** y una separación clara entre navegación y lógica de negocio.
 
 ```txt
 UrbanGO/
-├── app/                # Rutas y pantallas (Expo Router)
-├── src/                # Lógica de la aplicación
-│   ├── components/     # Componentes reutilizables
-│   ├── constants/      # Constantes globales (tema, colores, config)
-│   ├── hooks/          # Custom hooks
-│   ├── services/       # Servicios (API, lógica externa)
-│   ├── store/          # Estado global
-│   ├── types/          # Tipos e interfaces TypeScript
-│   └── utils/          # Funciones auxiliares
-├── assets/             # Imágenes y recursos
-└── tsconfig.
+├── app/                  # Rutas y pantallas (Expo Router)
+├── src/                  # Lógica de la aplicación
+│   ├── components/ui     # Componentes reutilizables
+│   ├── constants/        # Constantes globales (tema, colores, config)
+│   ├── hooks/            # Custom hooks
+│   ├── services/         # Servicios (API, lógica externa)
+│   ├── store/            # Estado global
+│   ├── types/            # Tipos e interfaces TypeScript
+│   └── utils/            # Funciones auxiliares
+├── assets/               # Imágenes y recursos
+└── tsconfig.json
 ```
 
 ## Responsabilidad de carpetas
@@ -51,7 +51,7 @@ UrbanGO/
 - Cada pantalla debe enfocarse solo en la presentación y flujo
 - Las pantallas NO deben:
   - Manejar lógica compleja
-  - Consumir servicios directamente
+  - Contener lógica de negocio directa
   - Contener más de una responsabilidad
 
 - La lógica debe extraerse a:
@@ -120,7 +120,7 @@ import { Button } from '@/src/components';
 | Utilidades  | camelCase      | `formatDate.ts`      |
 
 ### Documentación del código
-- No se permite subir código sin documentar.
+- Todo código nuevo relevante debe estar documentado
 - Todo archivo, función o componente nuevo debe explicar:
   - **Qué hace**
   - **Cómo funciona**
@@ -217,7 +217,8 @@ feat: agregar pantalla de login
 ```bash
 git push origin feature/nombre-de-la-tarea
 ```
-5. rear Pull Request (PR)
+
+5. Crear Pull Request (PR)
 Desde GitHub:
 - Crear Pull Request hacia main
 - Asignar al menos 1 revisor
@@ -233,4 +234,3 @@ Una vez aprobado el PR:
 - Se hace merge a main
 - Se elimina la rama
 Esto mantiene el repositorio limpio y ordenado.
-
