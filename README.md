@@ -121,6 +121,19 @@ import { Button } from '@/src/components';
 | Tipos       | PascalCase     | `User.ts`            |
 | Utilidades  | camelCase      | `formatDate.ts`      |
 
+### Documentación del código
+- No se permite subir código sin documentar.
+- Todo archivo, función o componente nuevo debe explicar:
+  - **Qué hace**
+  - **Cómo funciona**
+  - **Por qué existe**
+- La documentación debe realizarse mediante:
+  - Comentarios claros en el código
+  - Tipado correcto con TypeScript
+  - Nombres descriptivos de variables y funciones
+
+El código debe poder entenderse sin necesidad de explicación verbal.
+
 ## Dependencias del proyecto
 Este proyecto documenta de forma explícita todas las librerías utilizadas, su propósito y las reglas para agregar nuevas dependencias.
 
