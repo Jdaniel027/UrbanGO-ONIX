@@ -29,18 +29,55 @@ El proyecto utiliza **Expo Router** y mantiene una separación estricta entre
 
 ```txt
 UrbanGO/
-├── app/                  # Rutas y pantallas (Expo Router)
-├── src/                  # Lógica de la aplicación
-│   ├── components/ui     # Componentes reutilizables
-│   ├── constants/        # Constantes globales (tema, colores, config)
-│   ├── hooks/            # Custom hooks
-│   ├── services/         # Servicios (API, lógica externa)
-│   ├── store/            # Estado global
-│   ├── types/            # Tipos e interfaces TypeScript
-│   └── utils/            # Funciones auxiliares
-├── assets/               # Imágenes y recursos
-└── tsconfig.json
+├── app/                    # Rutas y pantallas (Expo Router)
+│   ├── _layout.tsx         # Layout principal de navegación
+│   ├── index.tsx           # Pantalla inicial
+│   └── (tabs)/             # Navegación por tabs (si aplica)
+│
+├── src/                    # Lógica de la aplicación
+│   ├── components/         # Componentes reutilizables
+│   │   └── ui/             # Componentes de UI (botones, inputs, cards)
+│   │
+│   ├── constants/          # Constantes globales
+│   │   ├── colors.ts       # Paleta de colores
+│   │   ├── theme.ts        # Configuración de tema
+│   │   └── env.ts          # Variables de entorno tipadas
+│   │
+│   ├── hooks/              # Custom hooks
+│   │
+│   ├── services/           # Servicios externos
+│   │   ├── api.ts          # Configuración base de API
+│   │   └── auth.service.ts # Ejemplo: lógica de autenticación
+│   │
+│   ├── store/              # Estado global (Zustand, Redux, etc.)
+│   │
+│   ├── types/              # Tipos e interfaces TypeScript
+│   │
+│   └── utils/              # Funciones auxiliares
+│ 
+│── tests/                   # Tests automatizados
+│   ├── components/          # Tests de componentes
+│   ├── hooks/               # Tests de hooks
+│   ├── services/            # Tests de servicios / API
+│   ├── utils/               # Tests de funciones auxiliares
+│   └── setup.ts             # Configuración global de tests
+│ 
+├── assets/                 # Imágenes, fuentes y recursos
+│   ├── images/
+│   └── fonts/
+│
+├── .env                    # Variables de entorno locales (NO se sube)
+├── .env.example            # Ejemplo de variables requeridas
+│
+├── .gitignore              # Archivos ignorados por Git
+├── app.json                # Configuración de Expo
+├── babel.config.js         # Configuración de Babel
+├── package.json            # Dependencias y scripts
+├── tsconfig.json           # Configuración de TypeScript
+└── README.md               # Documentación del proyecto
 ```
+> Nota: Los archivos `.env` no se versionan.  
+> Cada desarrollador debe crear su propio `.env` basado en `.env.example`.
 
 ---
 
