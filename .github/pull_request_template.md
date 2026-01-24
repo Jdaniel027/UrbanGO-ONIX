@@ -4,9 +4,11 @@
 
 Describe de forma clara y concisa el cambio realizado.
 
-- Ejemplo: Agrega pantalla de login
-- Ejemplo: Corrige bug en navegación
-- Ejemplo: Refactoriza servicio de autenticación
+Ejemplos:
+
+- Agrega pantalla de login
+- Corrige bug en navegación
+- Refactoriza servicio de autenticación
 
 ---
 
@@ -14,23 +16,25 @@ Describe de forma clara y concisa el cambio realizado.
 
 Marca con una `x` lo que aplique:
 
-- [ ] ✨ Nueva funcionalidad (feature)
-- [ ] 🐛 Corrección de error (fix)
-- [ ] ♻️ Refactorización (sin cambio de funcionalidad)
-- [ ] 🧹 Mantenimiento / configuración (chore)
-- [ ] 📝 Documentación
+- [ ] Nueva funcionalidad (feature)
+- [ ] Corrección de error (fix)
+- [ ] Refactorización (sin cambio de funcionalidad)
+- [ ] Mantenimiento / configuración (chore)
+- [ ] Documentación
 
 ---
 
 ## ¿Cómo se probó?
 
-Explica brevemente cómo verificaste que funciona correctamente:
+Indica cómo verificaste que el cambio funciona correctamente:
 
 - [ ] Se ejecutó la app con Expo
-- [ ] Se probó el flujo afectado manualmente
+- [ ] Se probó manualmente el flujo afectado
 - [ ] No rompe funcionalidades existentes
 
-Describe pruebas manuales relevantes (si aplica):
+### Detalles de pruebas (si aplica)
+
+Describe brevemente las pruebas realizadas:
 
 ---
 
@@ -48,7 +52,7 @@ Marca TODO antes de solicitar revisión:
 
 ---
 
-## Archivos o áreas afectadas
+## Áreas afectadas
 
 Marca lo que aplique:
 
@@ -62,11 +66,24 @@ Marca lo que aplique:
 
 ---
 
+## Cumplimiento de reglas del proyecto
+
+Confirma que este PR cumple con las reglas establecidas en el proyecto:
+
+- [ ] Leí y seguí las reglas definidas en el `README.md`
+- [ ] Cumplí las convenciones descritas en `CONTRIBUTING.md`
+- [ ] El código es claro, limpio y legible
+- [ ] El código está comentado solo donde es necesario
+- [ ] No hay código muerto o innecesario
+- [ ] No se rompió la arquitectura definida
+
+---
+
 ## Notas para el revisor
 
-¿Hay algo en específico que el revisor deba tomar en cuenta?
+¿Hay algo que el revisor deba tomar en cuenta?
 
-- Decisiones técnicas
+- Decisiones técnicas importantes
 - Posibles riesgos
 - Pendientes futuros
 
@@ -74,4 +91,4 @@ Marca lo que aplique:
 
 ## Contexto adicional
 
-Agrega capturas de antes y despues, links o contexto adicional si es necesario.
+Agrega capturas de pantalla (antes/después), enlaces o cualquier contexto adicional relevante.
