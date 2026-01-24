@@ -343,6 +343,8 @@ Todo cambio al proyecto debe realizarse mediante un Pull Request.
 - No se permite hacer push directo a `main`
 - Al menos 1 revisor debe aprobar el PR
 
+> Todo Pull Request debe confirmar el cumplimiento de estas reglas usando el PR Template.
+
 ### Checklist obligatorio
 
 Antes de marcar un PR como listo:
