@@ -29,18 +29,55 @@ El proyecto utiliza **Expo Router** y mantiene una separación estricta entre
 
 ```txt
 UrbanGO/
-├── app/                  # Rutas y pantallas (Expo Router)
-├── src/                  # Lógica de la aplicación
-│   ├── components/ui     # Componentes reutilizables
-│   ├── constants/        # Constantes globales (tema, colores, config)
-│   ├── hooks/            # Custom hooks
-│   ├── services/         # Servicios (API, lógica externa)
-│   ├── store/            # Estado global
-│   ├── types/            # Tipos e interfaces TypeScript
-│   └── utils/            # Funciones auxiliares
-├── assets/               # Imágenes y recursos
-└── tsconfig.json
+├── app/                    # Rutas y pantallas (Expo Router)
+│   ├── _layout.tsx         # Layout principal de navegación
+│   ├── index.tsx           # Pantalla inicial
+│   └── (tabs)/             # Navegación por tabs (si aplica)
+│
+├── src/                    # Lógica de la aplicación
+│   ├── components/         # Componentes reutilizables
+│   │   └── ui/             # Componentes de UI (botones, inputs, cards)
+│   │
+│   ├── constants/          # Constantes globales
+│   │   ├── colors.ts       # Paleta de colores
+│   │   ├── theme.ts        # Configuración de tema
+│   │   └── env.ts          # Variables de entorno tipadas
+│   │
+│   ├── hooks/              # Custom hooks
+│   │
+│   ├── services/           # Servicios externos
+│   │   ├── api.ts          # Configuración base de API
+│   │   └── auth.service.ts # Ejemplo: lógica de autenticación
+│   │
+│   ├── store/              # Estado global (Zustand, Redux, etc.)
+│   │
+│   ├── types/              # Tipos e interfaces TypeScript
+│   │
+│   └── utils/              # Funciones auxiliares
+│ 
+│── tests/                   # Tests automatizados
+│   ├── components/          # Tests de componentes
+│   ├── hooks/               # Tests de hooks
+│   ├── services/            # Tests de servicios / API
+│   ├── utils/               # Tests de funciones auxiliares
+│   └── setup.ts             # Configuración global de tests
+│ 
+├── assets/                 # Imágenes, fuentes y recursos
+│   ├── images/
+│   └── fonts/
+│
+├── .env                    # Variables de entorno locales (NO se sube)
+├── .env.example            # Ejemplo de variables requeridas
+│
+├── .gitignore              # Archivos ignorados por Git
+├── app.json                # Configuración de Expo
+├── babel.config.js         # Configuración de Babel
+├── package.json            # Dependencias y scripts
+├── tsconfig.json           # Configuración de TypeScript
+└── README.md               # Documentación del proyecto
 ```
+> Nota: Los archivos `.env` no se versionan.  
+> Cada desarrollador debe crear su propio `.env` basado en `.env.example`.
 
 ---
 
@@ -387,3 +424,133 @@ Una tarea se considera terminada cuando:
 - Resolver conflictos de merge con cuidado
 - Preguntar antes de hacer cambios grandes
 
+---
+
+## Estilos y arquitectura de componentes
+Este proyecto organiza los componentes por **dominio funcional** y define reglas claras sobre **dónde deben vivir los estilos**, según el tipo de componente.
+
+---
+
+## Estructura de componentes
+
+```txt
+src/
+└── components/
+    ├── auth/
+    │   ├── LoginForm.tsx
+    │   ├── RegisterForm.tsx
+    │   └── styles.ts (opcional)
+    │
+    ├── layout/
+    │   ├── AppLayout.tsx
+    │   ├── Header.tsx
+    │   └── Footer.tsx
+    │
+    ├── main/
+    │   ├── flujoprincipal/
+    │   │   ├── RouteCard.tsx
+    │   │   └── RouteList.tsx
+    │   │
+    │   └── rutasdecamiones/
+    │       ├── BusRouteMap.tsx
+    │       └── BusStopItem.tsx
+    │
+    ├── ui/
+    │   ├── Button.tsx
+    │   ├── Card.tsx
+    │   ├── Input.tsx
+    │   └── styles.ts
+    │
+    └── index.ts
+```
+Explicación de la arquitectura de componentes
+
+**auth/**
+
+Contiene componentes relacionados con autenticación:
+
+- Formularios de login y registro
+- Validaciones visuales
+- Componentes que solo se usan durante el proceso de autenticación
+> No contiene lógica de navegación ni estilos globales.
+
+**layout/** 
+
+Incluye componentes estructurales reutilizables:
+
+- Layout general de la app
+- Headers, footers, contenedores
+- Wrappers visuales comunes
+> Estos componentes no dependen del negocio, solo de la estructura visual.
+
+**main/**
+
+Agrupa los componentes del flujo principal de la aplicación.
+Se divide en subcarpetas por feature o funcionalidad, por ejemplo:
+- flujoprincipal/
+- rutasdecamiones/
+- Los componentes dentro de main:
+  - No necesitan carpeta propia si son pequeños
+  - Pueden tener estilos en el mismo archivo o en un styles.ts por feature
+
+**ui/**
+
+Componentes UI reutilizables y genéricos:
+
+- Botones
+- Cards
+- Inputs
+- Modales, tabs, etc.
+> Son independientes del contexto (auth, main, etc.)
+> Aquí sí es válido tener un styles.ts compartido
+
+---
+
+## Convención para componentes UI
+
+- Los componentes UI simples (Button, Card, Input) pueden vivir en un solo archivo.
+- Cuando un componente:
+  - tenga múltiples variantes
+  - tenga lógica compleja
+  - requiera tests o tipados propios
+  se le debe crear una carpeta propia.
+
+Ejemplo:
+
+```txt
+ui/
+├── Button.tsx           # componente simple
+├── Card.tsx
+
+ui/
+├── Button/
+│   ├── Button.tsx
+│   ├── Button.styles.ts
+│   └── index.ts         # componente complejo
+```
+
+> Componentes simples → estilos en el mismo archivo
+> Componentes complejos → estilos en archivo separado
+
+### Convención de estilos para pantallas
+
+- Cada pantalla debe tener su archivo de estilos separado.
+- El archivo de estilos debe estar al mismo nivel que la pantalla.
+- El nombre del archivo debe seguir el formato:
+  pantalla.styles.ts
+
+Ejemplo:
+home.tsx
+home.styles.ts
+
+```txt
+app/
+├── (auth)/
+│   ├── login.tsx
+│   ├── login.styles.ts
+│
+├── (main)/
+│   ├── home.tsx
+│   ├── home.styles.ts
+```
+> Pantalla y estilos juntos, pero separados en archivos distintos.
