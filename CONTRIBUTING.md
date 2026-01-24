@@ -426,8 +426,13 @@ Una tarea se considera terminada cuando:
 
 ---
 
-## Estilos 
-### Componetes 
+## Estilos y arquitectura de componentes
+Este proyecto organiza los componentes por **dominio funcional** y define reglas claras sobre **dónde deben vivir los estilos**, según el tipo de componente.
+
+---
+
+## Estructura de componentes
+
 ```txt
 src/
 └── components/
@@ -499,8 +504,9 @@ Componentes UI reutilizables y genéricos:
 > Son independientes del contexto (auth, main, etc.)
 > Aquí sí es válido tener un styles.ts compartido
 
+---
 
-### Convención para componentes UI
+## Convención para componentes UI
 
 - Los componentes UI simples (Button, Card, Input) pueden vivir en un solo archivo.
 - Cuando un componente:
@@ -523,9 +529,8 @@ ui/
 │   └── index.ts         # componente complejo
 ```
 
-> Los componentes simples tienen sus estilos en el mismo archivo.
-
-> Los componentes complejos los tienen en un archivo aparte con el mismo nombre del componente + .styles.ts
+> Componentes simples → estilos en el mismo archivo
+> Componentes complejos → estilos en archivo separado
 
 ### Convención de estilos para pantallas
 
@@ -548,4 +553,4 @@ app/
 │   ├── home.tsx
 │   ├── home.styles.ts
 ```
-> Pantalla + estilos juntos, pero separados en archivos distintos.
+> Pantalla y estilos juntos, pero separados en archivos distintos.
