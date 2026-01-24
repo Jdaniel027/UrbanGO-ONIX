@@ -75,7 +75,6 @@ Su objetivo es evitar reinstalar dependencias que ya se determinó que no aporta
 | Librería                | Motivo de descarte                             | Alternativa         |
 | ----------------------- | ---------------------------------------------- | ------------------- |
 | react-native-navigation | Incompatible con Expo Router                   | expo-router         |
-| redux                   | Complejidad innecesaria para el alcance actual | Context API         |
 | native-base             | Peso elevado y estilos poco flexibles          | Componentes propios |
 
 > Una dependencia descartada no debe reinstalarse sin volver a justificarla y documentarla.
