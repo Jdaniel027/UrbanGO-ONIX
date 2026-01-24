@@ -289,11 +289,79 @@ Antes de marcar un PR como listo:
 - [ ] El cambio está documentado si aplica
 
 ## Definición de Terminado
-
 Una tarea se considera terminada cuando:
-
 - El código cumple las convenciones del proyecto
 - Está integrado mediante Pull Request
 - Fue revisado y aprobado
 - No rompe funcionalidades existentes
 - No introduce deuda técnica innecesaria
+
+## Variables de entorno
+- Las variables sensibles deben definirse únicamente en archivos `.env`
+- El archivo `.env` **NUNCA** debe subirse al repositorio
+- El proyecto debe incluir un `.env.example` con las variables requeridas
+- Cada desarrollador es responsable de configurar su entorno local
+
+## Calidad y Testing
+
+La calidad del código es responsabilidad de todo el equipo.
+
+### Reglas generales
+- Todo código nuevo debe:
+  - Compilar sin errores
+  - Pasar el tipado de TypeScript
+  - No romper funcionalidades existentes
+- No se permite hacer merge con errores de TypeScript
+
+### Pruebas manuales obligatorias
+Antes de subir un PR, el desarrollador debe:
+- Ejecutar la app con Expo
+- Probar manualmente el flujo afectado
+- Verificar navegación, estados y errores comunes
+
+```bash
+npx expo start
+````
+
+## Errores y logs
+- No se permiten console.log en producción
+- Se permiten logs temporales solo durante desarrollo
+- Todo log debe eliminarse antes del merge
+
+## Limpieza de código
+- No dejar:
+  - Código comentado sin uso
+  - Archivos sin referencia
+  - Imports no utilizados
+- Si un archivo ya no se usa, debe eliminarse
+- No duplicar lógica: reutilizar hooks, utils o servicios existentes
+
+## Complejidad y tamaño de archivos
+- Un archivo no debe exceder:
+  - 200 líneas para componentes
+  - 150 líneas para hooks
+- Si un archivo crece demasiado:
+  - Debe dividirse
+  - O refactorizarse en funciones auxiliares
+ 
+## Nuevas funcionalidades
+Antes de empezar una nueva feature:
+- Confirmar que no exista ya algo similar
+- Definir claramente:
+  - Qué problema resuelve
+  - Qué archivos tocará
+- Dividir la funcionalidad en tareas pequeñas
+
+## Comunicación del equipo
+- Avisar cuando se trabaje en archivos críticos
+- No modificar archivos ajenos sin avisar
+- Resolver conflictos de merge con cuidado
+- Preguntar antes de hacer cambios grandes
+
+## Seguridad
+- No subir:
+  - Tokens
+  - API keys
+  - Credenciales
+- No hardcodear URLs sensibles
+- Toda configuración sensible va en `.env`
