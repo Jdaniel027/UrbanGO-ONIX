@@ -9,16 +9,22 @@ El sistema analiza las distintas rutas disponibles y selecciona la opción más 
 
 El objetivo principal es optimizar el tiempo y la experiencia de traslado dentro de la ciudad.
 
+---
+
 ## Tecnologías
 
-- React Native
-- Expo
-- Expo Router
-- TypeScript
-- Node.js
+- **React Native** – Desarrollo de aplicaciones móviles
+- **Expo** – Herramientas y entorno de ejecución
+- **Expo Router** – Navegación basada en archivos
+- **TypeScript** – Tipado estático y mantenibilidad
+- **Node.js** – Backend y servicios
 
-## Contribución
+---
 
-Este proyecto sigue reglas y convenciones específicas para el trabajo en equipo.
+## Documentación
+Este proyecto sigue un flujo de trabajo y reglas claras para facilitar el trabajo en equipo y mantener la calidad del código.
+Antes de realizar cualquier cambio, por favor revisa:
+- **[CONTRIBUTING.md](./CONTRIBUTING.md)**
+-  [Dependencias del proyecto](./DEPENDENCIES.md)
 
-Consulta [CONTRIBUTING.md](./CONTRIBUTING.md) antes de realizar cambios.
+
