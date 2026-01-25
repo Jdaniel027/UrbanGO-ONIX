@@ -54,11 +54,25 @@ git clone <URL_DEL_REPO>
 cd UrbanGO-ONIX
 ```
 
+**Ubicación del proyecto**
+
+> Para evitar errores al compilar la app en Android (especialmente problemas con Gradle y Java), **el proyecto no debe estar dentro de OneDrive** ni carpetas sincronizadas en la nube.
+
+Se recomienda mover el proyecto a una carpeta local, por ejemplo:
+
+```txt
+C:\Projects\UrbanGO-ONIX
+```
+
+> Esto asegura que los paths sean más cortos y que Gradle pueda acceder correctamente a todos los archivos temporales necesarios para la compilación.
+
 2. **Instalar dependencias**
 
 ```bash
 npm install
 ```
+
+> Esto instala todas las librerías de Node necesarias para el proyecto.
 
 3. **Configurar Java y Android (si no lo tienen):**
 
@@ -72,6 +86,8 @@ $Env:ANDROID_HOME="C:\Users\<usuario>\AppData\Local\Android\Sdk"
 $Env:Path="$Env:ANDROID_HOME\emulator;$Env:ANDROID_HOME\tools;$Env:ANDROID_HOME\tools\bin;$Env:ANDROID_HOME\platform-tools;" + $Env:Path
 ```
 > ⚠️ Estas variables aseguran que Gradle detecte correctamente Java y Android SDK.
+
+> ⚠️ Estos pasos son necesarios solo la primera vez en cada máquina.
 
 
 4. **Ejecutar la app en Android:**
