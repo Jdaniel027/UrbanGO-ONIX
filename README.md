@@ -28,3 +28,58 @@ Antes de realizar cualquier cambio, por favor revisa:
 
 - **[CONTRIBUTING.md](./CONTRIBUTING.md)**
 - [Dependencias del proyecto](./DEPENDENCIES.md)
+
+---
+
+## Configuración rápida para UrbanGO-ONIX
+
+## RRequisitos del sistema
+- **Node.js 20.x LTS**
+- **JDK 17** (Adoptium Temurin 17 LTS)
+- **Android Studio** con:
+  - SDK Platform 33
+  - Android Emulator
+- **Expo CLI:** `npm install -g expo-cli`
+
+> ⚠️ Asegúrate de que las versiones de Node y Java coincidan para evitar errores con Gradle.
+
+---
+
+## Pasos para arrancar el proyecto
+
+1. **Clonar el repo:**
+
+```bash
+git clone <URL_DEL_REPO>
+cd UrbanGO-ONIX
+```
+
+2. **Instalar dependencias**
+
+```bash
+npm install
+```
+
+3. **Configurar Java y Android (si no lo tienen):**
+
+```powershell
+# JDK 17
+$Env:JAVA_HOME="C:\Program Files\Adoptium\jdk-17.0.17"
+$Env:Path="$Env:JAVA_HOME\bin;" + $Env:Path
+
+# Android SDK (ejemplo)
+$Env:ANDROID_HOME="C:\Users\<usuario>\AppData\Local\Android\Sdk"
+$Env:Path="$Env:ANDROID_HOME\emulator;$Env:ANDROID_HOME\tools;$Env:ANDROID_HOME\tools\bin;$Env:ANDROID_HOME\platform-tools;" + $Env:Path
+```
+> ⚠️ Estas variables aseguran que Gradle detecte correctamente Java y Android SDK.
+
+
+4. **Ejecutar la app en Android:**
+
+Abre un emulador o conecta un dispositivo.
+El dispositivo tiene que estar en modo desarrollador y con la opcion de depuracion USB activada.
+```bash
+npx expo run:android
+```
+> La primera compilación puede tardar varios minutos.
+> Si algo falla, revisa que tu JDK sea 17 y que JAVA_HOME y ANDROID_HOME estén correctamente configurados.
