@@ -31,39 +31,56 @@ Antes de realizar cualquier cambio, por favor revisa:
 
 ---
 
-## Configuración rápida para UrbanGO-ONIX
+## Configuración rápida (solo líder del proyecto)
 
-## RRequisitos del sistema
+> ⚠️ Esta sección aplica **únicamente** para quien genera el APK de Expo Dev Build.
+
+### Requisitos del sistema
+
 - **Node.js 20.x LTS**
-- **JDK 17** (Adoptium Temurin 17 LTS)
-- **Android Studio** con:
-  - SDK Platform 33
+- **JDK 17 (Adoptium Temurin 17 LTS)**
+- **Android Studio**, con:
+  - Android SDK Platform 33+
   - Android Emulator
-- **Expo CLI:** `npm install -g expo-cli`
-
-> ⚠️ Asegúrate de que las versiones de Node y Java coincidan para evitar errores con Gradle.
+- **Expo CLI**
+```bash
+npm install -g expo-cli
+```
+> ⚠️ Asegúrate de que Node y Java coincidan en versión para evitar errores con Gradle.
 
 ---
 
 ## Guía para Desarrolladores – Uso de Expo Dev Build (APK)
 
-Esta guía explica **todo lo que debes hacer** si eres desarrollador del proyecto y **ya se te compartió el APK de Expo Dev Build**.
+Esta sección explica cómo trabajar en UrbanGO usando un APK de Expo Dev Build ya generado.
 
-> Importante: **NO necesitas Android Studio, SDK de Android ni configuraciones nativas**.  
-> Todo eso ya viene incluido en el APK.
+> Si ya se te compartieron el APK, NO necesitas configurar Android Studio, SDK, Java ni Gradle.
+> Todo lo nativo ya viene incluido en el APK.
 
 ---
 
-### Requisitos previos
+###Flujo general del proyecto
 
-Solo necesitas lo siguiente instalado en tu equipo:
+El líder del proyecto:
+- Configura Java, Android SDK y dependencias nativas
+- Genera el APK de Expo Dev Build
 
-- **Node.js (LTS recomendado)**
-- **npm**
-- **Git**
-- Un **emulador Android** o **celular físico Android**
+Los desarrolladores:
+- Trabajan solo con JavaScript / TypeScript
+- Usan el APK para ver cambios en tiempo real
 
-Para verificar Node.js:
+---
+
+### Requisitos para desarrolladores
+
+Solo necesitas:
+- Node.js (LTS recomendado)
+- npm
+- Git
+- Dispositivo Android físico o emulador
+- APK de Expo Dev Build
+
+PVerifica Node y npm:
 ```bash
 node -v
 npm -v
@@ -136,3 +153,18 @@ Solo si se hacen cambios como:
 | Navegación          | ❌ No                 |
 | Nueva lib nativa    | ✅ Sí                 |
 | Cambios Android/iOS | ✅ Sí                 |
+
+---
+
+### Importante: ubicación del proyecto
+
+> ⚠️ El proyecto NO debe estar dentro de OneDrive
+
+OneDrive puede causar:
+- Errores de Gradle
+- Builds lentos
+- Bloqueos de archivos
+Ubicación recomendada:
+```txt
+C:\Users\<usuario>\UrbanGO-ONIX
+```
