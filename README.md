@@ -45,57 +45,94 @@ Antes de realizar cualquier cambio, por favor revisa:
 
 ---
 
-## Pasos para arrancar el proyecto
+## Guía para Desarrolladores – Uso de Expo Dev Build (APK)
 
-1. **Clonar el repo:**
+Esta guía explica **todo lo que debes hacer** si eres desarrollador del proyecto y **ya se te compartió el APK de Expo Dev Build**.
+
+> Importante: **NO necesitas Android Studio, SDK de Android ni configuraciones nativas**.  
+> Todo eso ya viene incluido en el APK.
+
+---
+
+### Requisitos previos
+
+Solo necesitas lo siguiente instalado en tu equipo:
+
+- **Node.js (LTS recomendado)**
+- **npm**
+- **Git**
+- Un **emulador Android** o **celular físico Android**
+
+Para verificar Node.js:
+```bash
+node -v
+npm -v
+```
+
+**Paso 1: Instalar el APK de Expo Dev Build**
+
+- Copia el APK al celular
+- Ábrelo e instálalo
+- Acepta permisos si el sistema lo solicita
+
+> Este APK ya contiene Mapbox, módulos nativos y configuraciones especiales.
+
+**Paso 2: Clonar el repositorio del proyecto**
 
 ```bash
-git clone <URL_DEL_REPO>
-cd UrbanGO-ONIX
+git clone <URL_DEL_REPOSITORIO>
+cd <NOMBRE_DEL_PROYECTO>
 ```
 
-**Ubicación del proyecto**
-
-> Para evitar errores al compilar la app en Android (especialmente problemas con Gradle y Java), **el proyecto no debe estar dentro de OneDrive** ni carpetas sincronizadas en la nube.
-
-Se recomienda mover el proyecto a una carpeta local, por ejemplo:
-
-```txt
-C:\Projects\UrbanGO-ONIX
-```
-
-> Esto asegura que los paths sean más cortos y que Gradle pueda acceder correctamente a todos los archivos temporales necesarios para la compilación.
-
-2. **Instalar dependencias**
+**Paso 3: Instalar dependencias del proyecto**
 
 ```bash
 npm install
 ```
 
-> Esto instala todas las librerías de Node necesarias para el proyecto.
+**Paso 4: Iniciar el proyecto con Expo Dev Client**
 
-3. **Configurar Java y Android (si no lo tienen):**
+> ⚠️ NO uses expo go
 
-```powershell
-# JDK 17
-$Env:JAVA_HOME="C:\Program Files\Adoptium\jdk-17.0.17"
-$Env:Path="$Env:JAVA_HOME\bin;" + $Env:Path
-
-# Android SDK (ejemplo)
-$Env:ANDROID_HOME="C:\Users\<usuario>\AppData\Local\Android\Sdk"
-$Env:Path="$Env:ANDROID_HOME\emulator;$Env:ANDROID_HOME\tools;$Env:ANDROID_HOME\tools\bin;$Env:ANDROID_HOME\platform-tools;" + $Env:Path
-```
-> ⚠️ Estas variables aseguran que Gradle detecte correctamente Java y Android SDK.
-
-> ⚠️ Estos pasos son necesarios solo la primera vez en cada máquina.
-
-
-4. **Ejecutar la app en Android:**
-
-Abre un emulador o conecta un dispositivo.
-El dispositivo tiene que estar en modo desarrollador y con la opcion de depuracion USB activada.
+Ejecuta:
 ```bash
-npx expo run:android
+npx expo start --dev-client
 ```
-> La primera compilación puede tardar varios minutos.
-> Si algo falla, revisa que tu JDK sea 17 y que JAVA_HOME y ANDROID_HOME estén correctamente configurados.
+
+**Paso 5: Abrir la app en el dispositivo**
+
+- Abre la app instalada desde el APK
+- Si no se conecta automáticamente:
+  - Asegúrate de estar en la misma red Wi-Fi
+  - O usa conexión por USB
+Cuando el bundler esté activo, los cambios se reflejarán automáticamente.
+
+### Flujo de trabajo diario
+1. Abre el proyecto
+2. Ejecuta:
+```bash
+npx expo start --dev-client
+```
+3. Modifica archivos .js, .ts, .tsx
+4. Guarda cambios
+5. Ve los cambios reflejados en tiempo real
+
+### Cuándo SÍ se necesita un nuevo APK?
+
+Solo si se hacen cambios como:
+- Se agrega una nueva dependencia nativa
+- Se modifica configuración de Mapbox
+- Se cambian permisos (GPS, cámara, sensores, etc.)
+- Se agrega código Java/Kotlin o Swift
+
+> En ese caso, el líder del proyecto generará un nuevo APK y lo compartirá.
+
+**Resumen rápido**
+| Acción              | ¿Requiere nuevo APK? |
+| ------------------- | -------------------- |
+| Cambios de UI       | ❌ No                 |
+| Lógica JS/TS        | ❌ No                 |
+| Hooks / APIs        | ❌ No                 |
+| Navegación          | ❌ No                 |
+| Nueva lib nativa    | ✅ Sí                 |
+| Cambios Android/iOS | ✅ Sí                 |
