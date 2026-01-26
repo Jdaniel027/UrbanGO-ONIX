@@ -128,7 +128,12 @@ Cuando el bundler esté activo, los cambios se reflejarán automáticamente.
 1. Abre el proyecto
 2. Ejecuta:
 ```bash
+npx expo start
+o
 npx expo start --dev-client
+
+# Si el apk no abre
+expo start -c
 ```
 3. Modifica archivos .js, .ts, .tsx
 4. Guarda cambios
