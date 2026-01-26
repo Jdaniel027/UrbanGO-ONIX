@@ -168,3 +168,22 @@ Ubicación recomendada:
 ```txt
 C:\Users\<usuario>\UrbanGO-ONIX
 ```
+
+---
+
+### Versión del APK y compatibilidad
+
+El APK de Expo Dev Build **debe ser compatible con el código actual** del repositorio.
+
+Si el código cambia pero el APK no:
+- La app puede no abrir
+- Pueden faltar permisos
+- Pueden aparecer errores nativos
+
+Si después de un `git pull` la app deja de funcionar:
+1. Revisa si se anunció un APK nuevo
+2. Si hay uno nuevo, instálalo
+3. Vuelve a ejecutar:
+```bash
+npx expo start --dev-client
+```
