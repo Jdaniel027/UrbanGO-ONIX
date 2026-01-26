@@ -3,7 +3,7 @@ import {Text, View, StyleSheet} from 'react-native'
 function index() {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}> UrbanGO </Text>
+            <Text style={styles.title}> UrbanGO APK</Text>
         </View>
     )
 }
