@@ -1,0 +1,29 @@
+/**
+ * UserLocation
+ * -------------
+ * Maneja la ubicación en tiempo real del usuario.
+ *
+ * 🔹 Escucha la ubicación GPS del dispositivo.
+ * 🔹 Renderiza el indicador de ubicación del usuario en el mapa.
+ * 🔹 Se encarga del seguimiento automático si está habilitado.
+ *
+ * Responsabilidades:
+ * - Solicitar permisos de ubicación
+ * - Mostrar la posición actual del usuario
+ * - Actualizar la posición en tiempo real
+ *
+ * Casos de uso:
+ * - Centrar el mapa en el usuario
+ * - Navegación
+ * - Seguimiento de rutas
+ *
+ * Nota:
+ * - Este componente NO decide lógica de navegación.
+ * - Solo expone la ubicación al mapa.
+ */
+
+import Mapbox from "@rnmapbox/maps";
+
+export function UserLocation() {
+  return <Mapbox.UserLocation visible showsUserHeadingIndicator />;
+}
