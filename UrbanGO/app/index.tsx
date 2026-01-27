@@ -1,25 +1,7 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { Redirect } from 'expo-router';
 
-export default function Home() {
-    return (
-    <View style={styles.card}>
-        <Text style={styles.title}>UrbanGO</Text>
-        <Text>Selecciona tu ruta</Text>
-    </View>
-    );
+
+// Este archivo lo unico que hace es redireccionar a la carpeta /main
+export default function Index() {
+    return <Redirect href="/main" />;
 }
-
-const styles = StyleSheet.create({
-    card: {
-    marginTop: 50,
-    marginHorizontal: 20,
-    padding: 16,
-    borderRadius: 12,
-    backgroundColor: 'white',
-    elevation: 4,
-    },
-    title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    },
-});
