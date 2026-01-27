@@ -1,25 +1,25 @@
-import {Text, View, StyleSheet} from 'react-native'
+import { View, Text, StyleSheet } from 'react-native';
 
-function index() {
+export default function Home() {
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}> UrbanGO APK</Text>
-        </View>
-    )
+    <View style={styles.card}>
+        <Text style={styles.title}>UrbanGO</Text>
+        <Text>Selecciona tu ruta</Text>
+    </View>
+    );
 }
 
-export default index
-
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#0F172A', 
-        alignItems: 'center',
-        justifyContent: 'center',
+    card: {
+    marginTop: 50,
+    marginHorizontal: 20,
+    padding: 16,
+    borderRadius: 12,
+    backgroundColor: 'white',
+    elevation: 4,
     },
     title: {
-        color: '#FFFFFF',
-        fontSize: 32,
-        fontWeight: '700',
+    fontSize: 18,
+    fontWeight: 'bold',
     },
 });
