@@ -7,7 +7,7 @@ Este archivo documenta **todas las librerías instaladas en el proyecto**, su pr
 
 Para una visión general del proyecto, ver el [README.md](./README.md)
 > Para detalles de arquitectura y responsabilidades del mapa, ver:
-> [Documentación del Mapa](./map.md)
+> [Documentación del Mapa](./Map.md)
 
 ## Relación con package.json
 
