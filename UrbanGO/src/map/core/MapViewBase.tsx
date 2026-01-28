@@ -26,6 +26,7 @@ import { MapCamera } from "../camera/Camera";
 import { UserLocation } from "../location/UserLocation";
 import { RoutesLayer } from "../layers/routes/RoutesLayers";
 import { BusLayer } from "../layers/buses/BusLayer";
+import { POIsLayer } from "../pois/layers/POIsLayer";
 
 // Inicializa Mapbox con el token definido en variables de entorno en el .env
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_TOKEN!);
@@ -37,7 +38,7 @@ export function MapViewBase() {
       /**
        * Estilo base del mapa.
        * Puede cambiarse por un estilo personalizado de Mapbox Studio.*/
-      styleURL={Mapbox.StyleURL.Street}
+      styleURL={"mapbox://styles/joose027/cmkxf0dft00dc01pa44vigkgs"}
       /**
        * Deshabilita elementos visuales que no necesitamos
        * para una UI más limpia. */
@@ -50,10 +51,25 @@ export function MapViewBase() {
       scrollEnabled={true}
       zoomEnabled={true}
     >
+      {/**
+       * Registro de imágenes para Mapbox.
+       * El nombre ("test") debe coincidir con:
+       * properties.icon en los POIs.
+       */}
+      <Mapbox.Images
+        images={{
+          test: require("@/assets/images/map/icons/light/poi-house.svg"),
+        }}
+      />
+      {/* Capa de POIs */}
+      <POIsLayer />
       {/* Cámara inicial del mapa */}
       <MapCamera />
+      {/* Ubicación del usuario */}
       <UserLocation />
+      {/* Rutas */}
       <RoutesLayer />
+      {/* Camiones */}
       <BusLayer />
     </Mapbox.MapView>
   );
