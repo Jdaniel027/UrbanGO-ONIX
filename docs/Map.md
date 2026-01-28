@@ -21,44 +21,66 @@ El mapa **NO cambia al navegar entre pantallas** del flujo `/main`.
 
 ## Arquitectura general
 
-El mapa está diseñado siguiendo el principio de **separación de responsabilidades**.
+El mapa está diseñado siguiendo el principio de **separación de responsabilidades** y **arquitectura por dominios**.
 
 ```txt
 Mapa Base (persistente)
+├─ Core (MapView)
 ├─ Cámara
 ├─ Ubicación del usuario
-├─ Rutas
-├─ Camiones
+├─ Capas (Rutas, Camiones)
 ├─ Eventos
-└─ Estilos
+├─ Estilos
+└─ Hooks
 ```
 
-Cada parte del mapa vive en su propio archivo.
-
----
-
-## Estructura de archivos
+##Estructura de archivos
 
 ```txt
 src/map/
-├─ MapViewBase.tsx      → Contenedor principal del mapa
-├─ camera.ts            → Configuración de cámara inicial
-├─ userLocation.tsx     → Ubicación del usuario
-├─ routesLayer.tsx      → Rutas dibujadas en el mapa
-├─ busLayer.tsx         → Camiones/vehículos
-├─ mapEvents.ts         → Eventos del mapa
-├─ mapStyles.ts         → Estilos visuales
+├─ core/
+│  └─ MapViewBase.tsx        → Contenedor principal del mapa
+│
+├─ camera/
+│  └─ camera.config.ts       → Configuración inicial de cámara
+│
+├─ location/
+│  ├─ UserLocation.tsx       → Render de la ubicación del usuario
+│  └─ useUserLocation.ts     → Lógica de permisos y GPS
+│
+├─ layers/
+│  ├─ buses/
+│  │  ├─ BusLayer.tsx        → Render de camiones
+│  │  └─ useBusData.ts       → Datos de camiones
+│  │
+│  └─ routes/
+│     ├─ RoutesLayer.tsx     → Render de rutas
+│     └─ routes.types.ts     → Tipos de rutas
+│
+├─ events/
+│  └─ mapEvents.ts           → Eventos del mapa
+│
+├─ styles/
+│  └─ mapStyles.ts           → Estilos visuales del mapa
+│
+├─ hooks/
+│  └─ useMapReady.ts         → Hooks generales del mapa
+│
+└─ index.ts                  → Punto de exportación del módulo
 ```
+
+---
 
 ## MapViewBase
 
-Archivo: MapViewBase.tsx
+Archivo: core/MapViewBase.tsx
 
 Responsabilidades:
 - Inicializa Mapbox con el access token
 - Renderiza el MapView
 - Aplica configuraciones globales del mapa
 - Monta la cámara inicial
+- core/MapViewBase.tsx
 
 Notas importantes:
 - Se renderiza una sola vez
@@ -68,7 +90,7 @@ Notas importantes:
 
 ## Camera
 
-Archivo: camera.ts
+Archivo: camera/camera.tsx
 Define la vista inicial del mapa:
 - Zoom
 - Coordenadas iniciales
@@ -80,21 +102,25 @@ Define la vista inicial del mapa:
 
 ## Ubicación del usuario
 
-Archivo: userLocation.tsx
+Archivo: location/UserLocation.tsx
 
-Maneja:
-- Permisos de ubicación
-- Posición GPS en tiempo real
-- Seguimiento del usuario
+Responsabilidades:
+- Solicitud de permisos de ubicación
+- Obtención de la posición GPS
+- Seguimiento del usuario en tiempo real
 
 Usos comunes:
 - Centrar el mapa
 - Navegación
 - Mostrar posición actual
 
-## Rutas
+## Capas del mapa
 
-Archivo: routesLayer.tsx
+Las capas son componentes visuales puros.
+
+### Rutas
+
+Archivo: layers/routes/RoutesLayer.tsx
 
 Renderiza rutas en el mapa usando coordenadas:
 - Polylines
@@ -103,9 +129,9 @@ Renderiza rutas en el mapa usando coordenadas:
 
 > No obtiene datos por sí mismo, solo los representa.
 
-## Camiones
+### Camiones
 
-Archivo: busLayer.tsx
+Archivo: layers/buses/BusLayer.tsx
 
 Renderiza camiones/vehículos:
 - Marcadores personalizados
@@ -114,7 +140,7 @@ Renderiza camiones/vehículos:
 
 ## Eventos del mapa
 
-Archivo: mapEvents.ts
+Archivo: events/mapEvents.ts
 
 Centraliza eventos del mapa:
 - Movimiento de cámara
@@ -128,7 +154,7 @@ Permite reaccionar cuando:
 
 ## Estilos del mapa
 
-Archivo: mapStyles.ts
+Archivo: styles/mapStyles.ts
 
 Centraliza:
 - Colores
@@ -139,6 +165,15 @@ Facilita:
 - Cambios visuales
 - Temas claros/oscuros
 - Mantenimiento del diseña
+
+## Hooks generales
+
+Hooks generales:
+- Estado de carga del mapa
+- Sincronización de capas
+- Eventos globales
+
+> No contiene lógica específica de capas
 
 ## Qué NO debe hacerse
 
