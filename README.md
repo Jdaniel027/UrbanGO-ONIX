@@ -26,7 +26,7 @@ El objetivo principal es optimizar el tiempo y la experiencia de traslado dentro
 Este proyecto sigue un flujo de trabajo y reglas claras para facilitar el trabajo en equipo y mantener la calidad del código.
 Antes de realizar cualquier cambio, por favor revisa:
 
-- **[CONTRIBUTING.md](./CONTRIBUTING.md)**
+- **[CONTRIBUTING.md](./docs/CONTRIBUTING.md)**
 - [Dependencias del proyecto](./DEPENDENCIES.md)
 
 ---
