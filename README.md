@@ -27,8 +27,8 @@ Este proyecto sigue un flujo de trabajo y reglas claras para facilitar el trabaj
 Antes de realizar cualquier cambio, por favor revisa:
 
 - **[CONTRIBUTING](./CONTRIBUTING.md)**
-- **[Dependencias del proyecto](./DEPENDENCIES.md)**
-- **[Documentacion de mapbox](./map.md)**
+- **[Dependencias del proyecto](./docs/DEPENDENCIES.md)**
+- **[Documentacion de mapbox](./Map.md)**
 
 ---
 
