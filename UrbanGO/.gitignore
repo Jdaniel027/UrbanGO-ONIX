@@ -44,7 +44,7 @@ app-example
 
 # Environment variables
 .env
-.env.*
+# .env.*
 
 # Local config
 .env.local
