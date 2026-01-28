@@ -28,7 +28,7 @@ Antes de realizar cualquier cambio, por favor revisa:
 
 - **[CONTRIBUTING](./CONTRIBUTING.md)**
 - **[Dependencias del proyecto](./docs/DEPENDENCIES.md)**
-- **[Documentacion de mapbox](./Map.md)**
+- **[Documentacion de mapbox](.docs//Map.md)**
 
 ---
 
