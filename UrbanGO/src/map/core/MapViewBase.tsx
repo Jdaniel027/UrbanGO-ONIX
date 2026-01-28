@@ -22,10 +22,10 @@
 
 import Mapbox from "@rnmapbox/maps";
 import { StyleSheet } from "react-native";
-import { MapCamera } from "./Camera";
-import { UserLocation } from "./UserLocation";
-import { RoutesLayer } from "./RoutesLayers";
-import { BusLayer } from "./BusLayer";
+import { MapCamera } from "../camera/Camera";
+import { UserLocation } from "../location/UserLocation";
+import { RoutesLayer } from "../layers/routes/RoutesLayers";
+import { BusLayer } from "../layers/buses/BusLayer";
 
 // Inicializa Mapbox con el token definido en variables de entorno en el .env
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_TOKEN!);

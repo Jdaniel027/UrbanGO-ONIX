@@ -1,6 +1,6 @@
 import { Slot } from "expo-router";
 import { View, StyleSheet } from "react-native";
-import { MapViewBase } from "@/src/map/MapViewBase";
+import { MapViewBase } from "@/src/map/core/MapViewBase";
 
 export default function MainLayout() {
   return (
