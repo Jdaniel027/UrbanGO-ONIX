@@ -15,7 +15,7 @@
 
 export const POIS_STYLE = {
   /** Zoom mínimo para mostrar POIs */
-  minZoom: 12,
+  minZoom: 14,
   /**
    * Tamaño base del icono.
    * 1 = tamaño original del asset. */
