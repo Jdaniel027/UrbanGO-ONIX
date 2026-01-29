@@ -38,7 +38,7 @@ export function MapViewBase() {
       /**
        * Estilo base del mapa.
        * Puede cambiarse por un estilo personalizado de Mapbox Studio.*/
-      styleURL={"mapbox://styles/joose027/cmkxf0dft00dc01pa44vigkgs"}
+      styleURL="mapbox://styles/joose027/cmkxf0dft00dc01pa44vigkgs"
       /**
        * Deshabilita elementos visuales que no necesitamos
        * para una UI más limpia. */

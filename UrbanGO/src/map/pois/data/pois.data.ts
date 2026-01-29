@@ -11,7 +11,7 @@
  * - Puede ser reemplazado por datos de una API
  * - Puede combinarse con datos remotos + cache local
  *
- * 👉 Para agregar un nuevo POI:
+ * Para agregar un nuevo POI:
  * 1. Copia uno existente
  * 2. Cambia id, name, category y coordinates
  * 3. Asegúrate que coordinates sea [lng, lat]
