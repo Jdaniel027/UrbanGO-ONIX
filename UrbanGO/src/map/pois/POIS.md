@@ -10,7 +10,7 @@ El módulo de POIs está diseñado para crecer sin romperse cuando:
 
 ---
 
-Para una visión general del proyecto, ver el [README.md](../../../README.md)
+Para una visión general del proyecto, ver el [README.md](../../../../README.md)
 
 ---
 
