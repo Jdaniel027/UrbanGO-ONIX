@@ -26,4 +26,10 @@ export const POIS: POI[] = [
     category: "test", // Se usa para decidir el icono en el mapa
     coordinates: [-108.489001, 25.566315], // [longitud, latitud]
   },
+  {
+    id: "poi-test-2", // Identificador único del POI
+    name: "POI de prueba 2", // Nombre visible o descriptivo
+    category: "test", // Se usa para decidir el icono en el mapa
+    coordinates: [-108.488379, 25.566545],
+  },
 ];

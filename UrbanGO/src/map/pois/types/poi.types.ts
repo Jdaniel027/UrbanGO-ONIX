@@ -14,6 +14,8 @@
  * ❌ Errores difíciles de rastrear
  */
 
+export type POICategory = "test" | "shop" | "school" | "hospital";
+
 export interface POI {
   /**
    * Identificador único del POI.
@@ -29,11 +31,8 @@ export interface POI {
    * - Seleccionar iconos
    * - Filtrar POIs
    * - Aplicar estilos distintos
-   *
-   * En el futuro puede expandirse:
-   * "school" | "hospital" | "store" | etc.
    */
-  category: "test";
+  category: POICategory;
   /**
    * Coordenadas geográficas del POI.
    * IMPORTANTE: [longitud, latitud]

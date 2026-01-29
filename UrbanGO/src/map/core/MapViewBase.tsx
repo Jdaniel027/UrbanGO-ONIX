@@ -27,11 +27,15 @@ import { UserLocation } from "../location/UserLocation";
 import { RoutesLayer } from "../layers/routes/RoutesLayers";
 import { BusLayer } from "../layers/buses/BusLayer";
 import { POIsLayer } from "../pois/layers/POIsLayer";
+import { POICategory } from "../pois/types/poi.types";
 
 // Inicializa Mapbox con el token definido en variables de entorno en el .env
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_TOKEN!);
 
 export function MapViewBase() {
+  // Esta constante define que categorias de POIS se muestran en el mapa
+  const visibleCategories: POICategory[] = ["test"];
+
   return (
     <Mapbox.MapView
       style={StyleSheet.absoluteFill}
@@ -45,6 +49,7 @@ export function MapViewBase() {
       scaleBarEnabled={false}
       logoEnabled={false}
       compassEnabled={false}
+      attributionEnabled={false}
       /** Habilita vista 3D para futuras animaciones. */
       pitchEnabled={true}
       rotateEnabled={true}
@@ -58,11 +63,11 @@ export function MapViewBase() {
        */}
       <Mapbox.Images
         images={{
-          test: require("@/assets/images/map/icons/light/poi-house.svg"),
+          test: require("@/assets/images/map/icons/light/poiEjemplo.png"),
         }}
       />
       {/* Capa de POIs */}
-      <POIsLayer />
+      <POIsLayer visibleCategories={visibleCategories} />
       {/* Cámara inicial del mapa */}
       <MapCamera />
       {/* Ubicación del usuario */}

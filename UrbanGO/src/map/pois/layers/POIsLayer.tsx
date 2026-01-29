@@ -15,8 +15,14 @@
 import Mapbox from "@rnmapbox/maps";
 import { POIS } from "../data/pois.data";
 import { POIS_STYLE } from "../styles/pois.styles";
+import { POICategory } from "../types/poi.types";
 
-export function POIsLayer() {
+interface POIsLayerProps {
+  /** Categorías visibles definidas por la UI */
+  visibleCategories: POICategory[];
+}
+
+export function POIsLayer({ visibleCategories }: POIsLayerProps) {
   return (
     /**
      * ShapeSource:
@@ -34,6 +40,7 @@ export function POIsLayer() {
            * para estilos dinámicos. */
           properties: {
             icon: poi.category, // Coincide con el nombre del icono registrado
+            category: poi.category,
           },
           /**
            * Geometry:
@@ -49,22 +56,19 @@ export function POIsLayer() {
        * SymbolLayer:
        * Capa visual que renderiza iconos.
        */}
-      <Mapbox.SymbolLayer
-        id="pois-layer"
-        style={{
-          /**
-           * iconImage:
-           * Obtiene el nombre del icono desde properties.icon
-           */
-          iconImage: ["get", "icon"],
-
-          /**
-           * Estilos visuales del icono
-           */
-          iconSize: POIS_STYLE.iconSize,
-          iconAllowOverlap: POIS_STYLE.iconAllowOverlap,
-        }}
-      />
+      {visibleCategories.map((category) => (
+        <Mapbox.SymbolLayer
+          key={category}
+          id={`pois-${category}`}
+          minZoomLevel={POIS_STYLE.minZoom}
+          filter={["==", ["get", "category"], category]}
+          style={{
+            iconImage: category,
+            iconSize: POIS_STYLE.iconSize,
+            iconAllowOverlap: POIS_STYLE.iconAllowOverlap,
+          }}
+        />
+      ))}
     </Mapbox.ShapeSource>
   );
 }
