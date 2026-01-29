@@ -6,6 +6,9 @@ Este archivo documenta **todas las librerías instaladas en el proyecto**, su pr
 > Ninguna dependencia puede agregarse al proyecto sin documentarse aquí.
 
 Para una visión general del proyecto, ver el [README.md](./README.md)
+> Para detalles de arquitectura y responsabilidades del mapa, ver:
+> [Documentación del Mapa](./Map.md)
+
 ## Relación con package.json
 
 - `package.json` fuente técnica (qué está instalado)
@@ -13,12 +16,16 @@ Para una visión general del proyecto, ver el [README.md](./README.md)
 
 Si una librería existe en `package.json` pero no aquí, **debe documentarse**.
 
+---
+
 ## Dependencias Core / Framework
 
 | Librería     | Categoría | Propósito                | Usada en | Agregada por | Fecha      |
 | ------------ | --------- | ------------------------ | -------- | ------------ | ---------- |
 | react        | Core      | Librería principal de UI | Global   | Equipo       | 23-01-2026 |
 | react-native | Core      | Framework base           | Global   | Equipo       | 23-01-2026 |
+
+---
 
 ## Dependencias Expo
 
@@ -28,6 +35,8 @@ Si una librería existe en `package.json` pero no aquí, **debe documentarse**.
 | expo-router        | Navegación | Ruteo basado en archivos | App      | Equipo       | 23-01-2026 |
 | expo-splash-screen | UI         | Manejo del splash        | App      | Equipo       | 23-01-2026 |
 
+---
+
 ## Navegación
 
 | Librería                      | Categoría  | Propósito            | Usada en | Agregada por | Fecha      |
@@ -35,11 +44,26 @@ Si una librería existe en `package.json` pero no aquí, **debe documentarse**.
 | @react-navigation/native      | Navegación | Navegación principal | App      | Equipo       | 23-01-2026 |
 | @react-navigation/bottom-tabs | Navegación | Tabs inferiores      | App      | Equipo       | 23-01-2026 |
 
+---
+
 ## UI / Iconos
 
 | Librería           | Categoría | Propósito          | Usada en | Agregada por | Fecha      |
 | ------------------ | --------- | ------------------ | -------- | ------------ | ---------- |
 | @expo/vector-icons | UI        | Iconos del sistema | Screens  | Equipo       | 23-01-2026 |
+
+---
+
+## Mapas / Geolocalización
+
+| Librería          | Categoría | Propósito                                     | Usada en        | Agregada por | Fecha      |
+| ----------------- | --------- | --------------------------------------------- | --------------- | ------------ | ---------- |
+| @rnmapbox/maps    | Mapas     | Renderizado de mapas Mapbox nativo            | src/map         | Daniel       | 26-01-2026 |
+| expo-location     | Mapas     | Permisos y ubicación GPS del usuario          | src/map         | Daniel       | 26-01-2026 |
+| expo-dev-client   | Tooling   | Soporte para Dev Build con código nativo      | Global          | Daniel       | 26-01-2026 |
+
+
+---
 
 ## Dependencias de desarrollo
 

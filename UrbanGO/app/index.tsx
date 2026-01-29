@@ -1,25 +1,12 @@
-import {Text, View, StyleSheet} from 'react-native'
+import { Redirect } from "expo-router";
 
-function index() {
-    return (
-        <View style={styles.container}>
-            <Text style={styles.title}> UrbanGO APK</Text>
-        </View>
-    )
+// Este archivo lo unico que hace es redireccionar a la carpeta /main o /auth dependiendo si ya tiene cuneta o no
+export default function Index() {
+  const isAuthenticated = true; // luego token real
+
+  return isAuthenticated ? (
+    <Redirect href="/main" />
+  ) : (
+    <Redirect href="/auth" />
+  );
 }
-
-export default index
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#0F172A', 
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    title: {
-        color: '#FFFFFF',
-        fontSize: 32,
-        fontWeight: '700',
-    },
-});
