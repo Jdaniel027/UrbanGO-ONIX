@@ -29,6 +29,7 @@ Antes de realizar cualquier cambio, por favor revisa:
 - **[CONTRIBUTING](./docs//CONTRIBUTING.md)**
 - **[Dependencias del proyecto](./docs/DEPENDENCIES.md)**
 - **[Documentacion de mapbox](./docs/Map.md)**
+- **[Documentacion de POIS](./UrbanGO/src/map/pois/POIS.md)**
 
 ---
 
