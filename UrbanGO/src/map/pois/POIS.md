@@ -187,9 +187,9 @@ Regla:
 
 - Agregar un POI NO debe requerir tocar capas ni estilos
 - Agregar una categoría requiere:
-  1. Actualizar `POICategory`
-  2. Registrar icono
-  3. (Opcional) ajustar estilos
+  - Actualizar `POICategory`
+  - Registrar icono
+  - (Opcional) ajustar estilos
 
 Si alguna de estas reglas se rompe, la arquitectura debe revisarse.
 
