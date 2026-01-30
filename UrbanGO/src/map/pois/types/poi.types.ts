@@ -15,11 +15,11 @@
  */
 
 export type POICategory =
-  | "test"
-  | "shop"
-  | "school"
+  | "restaurant"
   | "hospital"
-  | "restaurant";
+  | "school"
+  | "shop"
+  | "stop"; // paradas
 
 export interface POI {
   /**

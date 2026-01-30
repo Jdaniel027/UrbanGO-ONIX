@@ -29,6 +29,7 @@ import { BusLayer } from "../layers/buses/BusLayer";
 import { POIsLayer } from "../pois/layers/POIsLayer";
 import { POICategory } from "../pois/types/poi.types";
 import { POIS } from "../pois/data/poi.data";
+import { StopsLayer } from "../stops/components/StopsLayer";
 
 // Inicializa Mapbox con el token definido en variables de entorno en el .env
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_TOKEN!);
@@ -36,11 +37,11 @@ Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_TOKEN!);
 export function MapViewBase() {
   // Esta constante define que categorias de POIS se muestran en el mapa
   const visibleCategories: POICategory[] = [
-    "test",
-    // "shop",
-    // "school",
-    // "hospital",
-    // "restaurant,"
+    "restaurant",
+    "hospital",
+    "school",
+    "shop",
+    "stop",
   ];
 
   return (
@@ -70,11 +71,19 @@ export function MapViewBase() {
        */}
       <Mapbox.Images
         images={{
-          test: require("@/assets/images/map/icons/light/poiEjemplo.png"),
+          // test: require("@/assets/images/map/icons/light/poiEjemplo.png"),
+          restaurant: require("@/assets/images/map/icons/light/poiRestaurant.png"),
+          hospital: require("@/assets/images/map/icons/light/poiHospital.png"),
+          school: require("@/assets/images/map/icons/light/poiSchool.png"),
+          shop: require("@/assets/images/map/icons/light/poiShop.png"),
+          stop: require("@/assets/images/map/icons/light/poiStop.png"),
         }}
       />
       {/* Capa de POIs */}
       <POIsLayer pois={POIS} visibleCategories={visibleCategories} />
+
+      <StopsLayer />
+
       {/* Cámara inicial del mapa */}
       <MapCamera />
       {/* Ubicación del usuario */}

@@ -13,7 +13,6 @@
  */
 
 import Mapbox from "@rnmapbox/maps";
-import { POIS } from "../data/poi.data";
 import { POIS_STYLE } from "../styles/poi.styles";
 import { POI, POICategory } from "../types/poi.types";
 
