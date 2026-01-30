@@ -193,6 +193,13 @@ Regla:
 
 Si alguna de estas reglas se rompe, la arquitectura debe revisarse.
 
+---
+
+## Modo Offline
+
+Los POIs se renderizan SIEMPRE desde cache local.
+La API solo se usa para sincronización.
+
 
 
 

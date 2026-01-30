@@ -13,16 +13,19 @@
  */
 
 import Mapbox from "@rnmapbox/maps";
-import { POIS } from "../data/pois.data";
-import { POIS_STYLE } from "../styles/pois.styles";
-import { POICategory } from "../types/poi.types";
+import { POIS } from "../data/poi.data";
+import { POIS_STYLE } from "../styles/poi.styles";
+import { POI, POICategory } from "../types/poi.types";
 
 interface POIsLayerProps {
+  /** Lista de POIs ya procesados */
+  pois: POI[];
+
   /** Categorías visibles definidas por la UI */
   visibleCategories: POICategory[];
 }
 
-export function POIsLayer({ visibleCategories }: POIsLayerProps) {
+export function POIsLayer({ pois, visibleCategories }: POIsLayerProps) {
   return (
     /**
      * ShapeSource:
@@ -32,14 +35,16 @@ export function POIsLayer({ visibleCategories }: POIsLayerProps) {
       id="pois-source"
       shape={{
         type: "FeatureCollection",
-        features: POIS.map((poi) => ({
+        features: pois.map((poi) => ({
           type: "Feature",
           /**
            * Properties:
            * Información adicional que puede usarse
            * para estilos dinámicos. */
           properties: {
-            icon: poi.category, // Coincide con el nombre del icono registrado
+            id: poi.id,
+            name: poi.name,
+            icon: poi.category,
             category: poi.category,
           },
           /**

@@ -28,13 +28,20 @@ import { RoutesLayer } from "../layers/routes/RoutesLayers";
 import { BusLayer } from "../layers/buses/BusLayer";
 import { POIsLayer } from "../pois/layers/POIsLayer";
 import { POICategory } from "../pois/types/poi.types";
+import { POIS } from "../pois/data/poi.data";
 
 // Inicializa Mapbox con el token definido en variables de entorno en el .env
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_TOKEN!);
 
 export function MapViewBase() {
   // Esta constante define que categorias de POIS se muestran en el mapa
-  const visibleCategories: POICategory[] = ["test"];
+  const visibleCategories: POICategory[] = [
+    "test",
+    // "shop",
+    // "school",
+    // "hospital",
+    // "restaurant,"
+  ];
 
   return (
     <Mapbox.MapView
@@ -67,7 +74,7 @@ export function MapViewBase() {
         }}
       />
       {/* Capa de POIs */}
-      <POIsLayer visibleCategories={visibleCategories} />
+      <POIsLayer pois={POIS} visibleCategories={visibleCategories} />
       {/* Cámara inicial del mapa */}
       <MapCamera />
       {/* Ubicación del usuario */}

@@ -14,7 +14,12 @@
  * ❌ Errores difíciles de rastrear
  */
 
-export type POICategory = "test" | "shop" | "school" | "hospital";
+export type POICategory =
+  | "test"
+  | "shop"
+  | "school"
+  | "hospital"
+  | "restaurant";
 
 export interface POI {
   /**
@@ -38,4 +43,8 @@ export interface POI {
    * IMPORTANTE: [longitud, latitud]
    */
   coordinates: [number, number];
+
+  // Futuro (cuando backend exista)
+  // cityId?: string;
+  // updatedAt?: string;
 }
