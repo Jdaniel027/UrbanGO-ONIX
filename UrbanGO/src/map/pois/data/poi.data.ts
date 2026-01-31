@@ -25,24 +25,28 @@ export const POIS: POI[] = [
     name: "Taqueria el chapo", // Nombre visible o descriptivo
     category: "restaurant", // Se usa para decidir el icono en el mapa
     coordinates: [-108.48573, 25.566519], // [longitud, latitud]
+    importance: "high",
   },
   {
     id: "poi-hospital-1",
     name: "Clinica dental unident",
     category: "hospital",
     coordinates: [-108.484319, 25.56655],
+    importance: "high",
   },
   {
     id: "poi-school-1",
     name: "Uadeo",
     category: "school",
     coordinates: [-108.486474, 25.568081],
+    importance: "high",
   },
   {
     id: "poi-shop-1",
     name: "Papeleria de occidente",
     category: "shop",
     coordinates: [-108.486299, 25.566688],
+    importance: "high",
   },
   // {
   //   id: "poi-stop-1",

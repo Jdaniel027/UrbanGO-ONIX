@@ -13,8 +13,8 @@
  */
 
 import Mapbox from "@rnmapbox/maps";
-import { POIS_STYLE } from "../styles/poi.styles";
-import { POI, POICategory } from "../types/poi.types";
+import { POIS_STYLE } from "../../pois/styles/poi.styles";
+import { POI, POICategory } from "../../pois/types/poi.types";
 
 interface POIsLayerProps {
   /** Lista de POIs ya procesados */
@@ -45,6 +45,7 @@ export function POIsLayer({ pois, visibleCategories }: POIsLayerProps) {
             name: poi.name,
             icon: poi.category,
             category: poi.category,
+            importance: poi.importance,
           },
           /**
            * Geometry:
@@ -56,23 +57,45 @@ export function POIsLayer({ pois, visibleCategories }: POIsLayerProps) {
         })),
       }}
     >
-      {/**
-       * SymbolLayer:
-       * Capa visual que renderiza iconos.
-       */}
-      {visibleCategories.map((category) => (
-        <Mapbox.SymbolLayer
-          key={category}
-          id={`pois-${category}`}
-          minZoomLevel={POIS_STYLE.minZoom}
-          filter={["==", ["get", "category"], category]}
-          style={{
-            iconImage: category,
-            iconSize: POIS_STYLE.iconSize,
-            iconAllowOverlap: POIS_STYLE.iconAllowOverlap,
-          }}
-        />
-      ))}
+      <Mapbox.SymbolLayer
+        id="pois-icons"
+        filter={[
+          "all",
+          ["in", ["get", "category"], ["literal", visibleCategories]],
+          [
+            "any",
+            [
+              "all",
+              ["==", ["get", "importance"], "high"],
+              [">=", ["zoom"], 13],
+            ],
+            [
+              "all",
+              ["==", ["get", "importance"], "medium"],
+              [">=", ["zoom"], 15],
+            ],
+            ["all", ["==", ["get", "importance"], "low"], [">=", ["zoom"], 17]],
+          ],
+        ]}
+        style={{
+          iconImage: ["get", "category"],
+          iconSize: POIS_STYLE.iconSize,
+          iconAllowOverlap: false,
+          iconIgnorePlacement: false,
+          iconPadding: 4,
+        }}
+      />
+      <Mapbox.SymbolLayer
+        id="pois-labels"
+        minZoomLevel={16}
+        style={{
+          textField: ["get", "name"],
+          textSize: 12,
+          textOffset: [0, 1.3],
+          textAnchor: "top",
+          textOptional: true,
+        }}
+      />
     </Mapbox.ShapeSource>
   );
 }

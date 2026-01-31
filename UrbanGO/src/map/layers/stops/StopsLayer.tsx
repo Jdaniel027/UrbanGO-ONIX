@@ -19,8 +19,8 @@
  */
 
 import Mapbox from "@rnmapbox/maps";
-import { stopsMock } from "../data/stops.mock";
-import { useStopsGeoJSON } from "../hooks/useStopsGeoJSON";
+import { stopsMock } from "../../stops/data/stops.mock";
+import { useStopsGeoJSON } from "../../stops/hooks/useStopsGeoJSON";
 
 export function StopsLayer() {
   /**
@@ -91,6 +91,8 @@ export function StopsLayer() {
           textField: ["get", "point_count"],
           textSize: 10,
           textColor: "#ffffff",
+          iconIgnorePlacement: true,
+          textIgnorePlacement: true,
         }}
       />
 
@@ -116,6 +118,8 @@ export function StopsLayer() {
           iconSize: 0.6,
           // Permite superposición si es necesario
           iconAllowOverlap: true,
+          iconPadding: 0,
+          textPadding: 0,
         }}
       />
     </Mapbox.ShapeSource>

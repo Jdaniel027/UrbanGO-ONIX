@@ -21,6 +21,8 @@ export type POICategory =
   | "shop"
   | "stop"; // paradas
 
+export type POIImportance = "high" | "medium" | "low";
+
 export interface POI {
   /**
    * Identificador único del POI.
@@ -43,6 +45,13 @@ export interface POI {
    * IMPORTANTE: [longitud, latitud]
    */
   coordinates: [number, number];
+
+  /**
+   * Esto define que tan importante es el POI,
+   * Dependiendo de su importancia es conque tanto zoom en la pantalla se mostrara
+   */
+
+  importance: POIImportance;
 
   // Futuro (cuando backend exista)
   // cityId?: string;

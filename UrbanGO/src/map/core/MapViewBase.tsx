@@ -26,10 +26,10 @@ import { MapCamera } from "../camera/Camera";
 import { UserLocation } from "../location/UserLocation";
 import { RoutesLayer } from "../layers/routes/RoutesLayers";
 import { BusLayer } from "../layers/buses/BusLayer";
-import { POIsLayer } from "../pois/layers/POIsLayer";
+import { POIsLayer } from "../layers/pois/POIsLayer";
 import { POICategory } from "../pois/types/poi.types";
 import { POIS } from "../pois/data/poi.data";
-import { StopsLayer } from "../stops/components/StopsLayer";
+import { StopsLayer } from "../layers/stops/StopsLayer";
 
 // Inicializa Mapbox con el token definido en variables de entorno en el .env
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_TOKEN!);
@@ -79,6 +79,7 @@ export function MapViewBase() {
           stop: require("@/assets/images/map/icons/light/poiStop.png"),
         }}
       />
+
       {/* Capa de POIs */}
       <POIsLayer pois={POIS} visibleCategories={visibleCategories} />
 
