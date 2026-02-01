@@ -196,3 +196,22 @@ Esto evita:
 - Bugs visuales
 - Paradas en el océano
 - Errores silenciosos
+
+**useMemo (performance)**
+
+```ts
+return useMemo(() => ({ ... }), [stops]);
+```
+
+- Evita recalcular GeoJSON en cada render
+- Solo cambia si cambian las paradas
+
+Importante cuando:
+
+- Hay cientos de paradas
+- Hay tiempo real
+- Hay animaciones
+
+**Regla de oro del módulo Stops**
+
+> Datos → Hook → GeoJSON → Layer → Mapbox

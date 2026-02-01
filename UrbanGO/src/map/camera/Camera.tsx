@@ -24,7 +24,11 @@ export function MapCamera() {
        * - 13–15: calles
        * - 16+: navegación precisa
        */
-      zoomLevel={13}
+      zoomLevel={12}
+      /** Zoom maximo que se puede hacer */
+      minZoomLevel={11}
+      /** Zoom mimnimo que se puede hacer */
+      maxZoomLevel={18}
       /**
        * Coordenadas iniciales del mapa
        * Guasave, Sinaloa */

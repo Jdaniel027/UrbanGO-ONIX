@@ -48,16 +48,4 @@ export const POIS: POI[] = [
     coordinates: [-108.486299, 25.566688],
     importance: "high",
   },
-  // {
-  //   id: "poi-stop-1",
-  //   name: "Uadeo1",
-  //   category: "stop",
-  //   coordinates: [-108.486458, 25.56692],
-  // },
-  // {
-  //   id: "poi-stop-2",
-  //   name: "Ley express",
-  //   category: "stop",
-  //   coordinates: [-108.48361, 25.566621],
-  // },
 ];

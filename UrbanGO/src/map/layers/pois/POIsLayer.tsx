@@ -85,6 +85,7 @@ export function POIsLayer({ pois, visibleCategories }: POIsLayerProps) {
           iconPadding: 4,
         }}
       />
+
       <Mapbox.SymbolLayer
         id="pois-labels"
         minZoomLevel={16}

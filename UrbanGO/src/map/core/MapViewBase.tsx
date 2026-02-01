@@ -25,11 +25,12 @@ import { StyleSheet } from "react-native";
 import { MapCamera } from "../camera/Camera";
 import { UserLocation } from "../location/UserLocation";
 import { RoutesLayer } from "../layers/routes/RoutesLayers";
-import { BusLayer } from "../layers/buses/BusLayer";
+import { VehicleLayer } from "../layers/vehicle/VehicleLayer";
 import { POIsLayer } from "../layers/pois/POIsLayer";
 import { POICategory } from "../pois/types/poi.types";
 import { POIS } from "../pois/data/poi.data";
 import { StopsLayer } from "../layers/stops/StopsLayer";
+import { mockVehicles } from "../vehicle/data/vehicle.mock";
 
 // Inicializa Mapbox con el token definido en variables de entorno en el .env
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_TOKEN!);
@@ -50,7 +51,7 @@ export function MapViewBase() {
       /**
        * Estilo base del mapa.
        * Puede cambiarse por un estilo personalizado de Mapbox Studio.*/
-      styleURL="mapbox://styles/joose027/cmkxf0dft00dc01pa44vigkgs"
+      styleURL="mapbox://styles/joose027/cml45nfc3000s01r86i4i5823"
       /**
        * Deshabilita elementos visuales que no necesitamos
        * para una UI más limpia. */
@@ -77,6 +78,7 @@ export function MapViewBase() {
           school: require("@/assets/images/map/icons/light/poiSchool.png"),
           shop: require("@/assets/images/map/icons/light/poiShop.png"),
           stop: require("@/assets/images/map/icons/light/poiStop.png"),
+          bus: require("@/assets/images/map/icons/light/bus.png"),
         }}
       />
 
@@ -92,7 +94,7 @@ export function MapViewBase() {
       {/* Rutas */}
       <RoutesLayer />
       {/* Camiones */}
-      <BusLayer />
+      <VehicleLayer vehicles={mockVehicles} />
     </Mapbox.MapView>
   );
 }
