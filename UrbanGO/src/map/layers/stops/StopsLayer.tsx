@@ -14,8 +14,6 @@
  * ❌ NO obtiene datos
  * ❌ NO conoce backend ni ciudades
  * ❌ NO transforma datos manualmente
- *
- * Los datos siempre llegan ya transformados en GeoJSON.
  */
 
 import Mapbox from "@rnmapbox/maps";

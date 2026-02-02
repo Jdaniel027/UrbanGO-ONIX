@@ -22,20 +22,32 @@
 
 import Mapbox from "@rnmapbox/maps";
 import { StyleSheet } from "react-native";
+
 import { MapCamera } from "../camera/Camera";
 import { UserLocation } from "../location/UserLocation";
+
+import { POIsLayer } from "../layers/pois/POIsLayer";
+import { StopsLayer } from "../layers/stops/StopsLayer";
 import { RoutesLayer } from "../layers/routes/RoutesLayers";
 import { VehicleLayer } from "../layers/vehicle/VehicleLayer";
-import { POIsLayer } from "../layers/pois/POIsLayer";
-import { POICategory } from "../pois/types/poi.types";
+
 import { POIS } from "../pois/data/poi.data";
-import { StopsLayer } from "../layers/stops/StopsLayer";
+import { POICategory } from "../pois/types/poi.types";
 import { mockVehicles } from "../vehicle/data/vehicle.mock";
+
+import { MapMode } from "../core/mapMode.types";
+import { MAP_CONFIG_BY_MODE } from "../core/mapConfig";
 
 // Inicializa Mapbox con el token definido en variables de entorno en el .env
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_TOKEN!);
 
-export function MapViewBase() {
+interface MapViewBaseProps {
+  mapMode: MapMode;
+}
+
+export function MapViewBase({ mapMode }: MapViewBaseProps) {
+  const config = MAP_CONFIG_BY_MODE[mapMode ?? "SELECT_POINTS"];
+
   // Esta constante define que categorias de POIS se muestran en el mapa
   const visibleCategories: POICategory[] = [
     "restaurant",
@@ -81,20 +93,23 @@ export function MapViewBase() {
           bus: require("@/assets/images/map/icons/light/bus.png"),
         }}
       />
-
       {/* Capa de POIs */}
-      <POIsLayer pois={POIS} visibleCategories={visibleCategories} />
-
-      <StopsLayer />
-
+      {config.showPois && (
+        <POIsLayer pois={POIS} visibleCategories={visibleCategories} />
+      )}
+      {/* Capa de paradas */}
+      {config.showStops !== "NONE" && <StopsLayer />}
+      {/* Capa de rutas */}
+      {config.showRoutes !== "NONE" && (
+        <RoutesLayer />
+        // MULTIPLE o SINGLE según config
+      )}
+      {/* Capa de vehículos */}
+      {config.showVehicles && <VehicleLayer vehicles={mockVehicles} />}
       {/* Cámara inicial del mapa */}
       <MapCamera />
       {/* Ubicación del usuario */}
       <UserLocation />
-      {/* Rutas */}
-      <RoutesLayer />
-      {/* Camiones */}
-      <VehicleLayer vehicles={mockVehicles} />
     </Mapbox.MapView>
   );
 }

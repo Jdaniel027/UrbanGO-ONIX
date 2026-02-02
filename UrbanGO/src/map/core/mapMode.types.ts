@@ -1,0 +1,5 @@
+export type MapMode =
+  | "SELECT_POINTS"
+  | "ROUTE_SUGGESTION"
+  | "ROUTE_TRACKING"
+  | "ROUTE_EXPLORER";

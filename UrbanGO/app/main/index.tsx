@@ -1,10 +1,18 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
+import { useMapMode } from "@/src/map/core/state/MapModeContext";
 
 export default function Home() {
+  const { setMapMode } = useMapMode();
+
   return (
     <View style={styles.card}>
       <Text style={styles.title}>UrbanGO</Text>
       <Text>Selecciona tu ruta</Text>
+
+      {/* <Button
+        title="Buscar ruta"
+        onPress={() => setMapMode("ROUTE_SUGGESTION")}
+      /> */}
     </View>
   );
 }
