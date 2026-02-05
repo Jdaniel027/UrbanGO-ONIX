@@ -31,12 +31,13 @@ import { StopsLayer } from "../layers/stops/StopsLayer";
 import { RoutesLayer } from "../layers/routes/RoutesLayers";
 import { VehicleLayer } from "../layers/vehicle/VehicleLayer";
 
-import { POIS } from "../pois/data/poi.data";
 import { POICategory } from "../pois/types/poi.types";
 import { mockVehicles } from "../vehicle/data/vehicle.mock";
 
 import { MapMode } from "../core/mapMode.types";
 import { MAP_CONFIG_BY_MODE } from "../core/mapConfig";
+
+import { useMapData } from "../hooks/useMapData";
 
 // Inicializa Mapbox con el token definido en variables de entorno en el .env
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_TOKEN!);
@@ -46,7 +47,12 @@ interface MapViewBaseProps {
 }
 
 export function MapViewBase({ mapMode }: MapViewBaseProps) {
-  const config = MAP_CONFIG_BY_MODE[mapMode ?? "SELECT_POINTS"];
+  const { pois, stops, loading } = useMapData();
+
+  const config =
+    MAP_CONFIG_BY_MODE[mapMode] ?? MAP_CONFIG_BY_MODE["SELECT_POINTS"];
+
+  if (loading || !config) return null;
 
   // Esta constante define que categorias de POIS se muestran en el mapa
   const visibleCategories: POICategory[] = [
@@ -95,10 +101,10 @@ export function MapViewBase({ mapMode }: MapViewBaseProps) {
       />
       {/* Capa de POIs */}
       {config.showPois && (
-        <POIsLayer pois={POIS} visibleCategories={visibleCategories} />
+        <POIsLayer pois={pois} visibleCategories={visibleCategories} />
       )}
       {/* Capa de paradas */}
-      {config.showStops !== "NONE" && <StopsLayer />}
+      {config.showStops !== "NONE" && <StopsLayer stops={stops} />}
       {/* Capa de rutas */}
       {config.showRoutes !== "NONE" && (
         <RoutesLayer />

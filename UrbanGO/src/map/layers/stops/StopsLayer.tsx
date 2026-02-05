@@ -19,8 +19,14 @@
 import Mapbox from "@rnmapbox/maps";
 import { stopsMock } from "../../stops/data/stops.mock";
 import { useStopsGeoJSON } from "../../stops/hooks/useStopsGeoJSON";
+import { Stop } from "../../stops/types/types";
 
-export function StopsLayer() {
+interface StopsLayerProps {
+  stops: Stop[];
+}
+
+export function StopsLayer({ stops }: StopsLayerProps) {
+  const geojson = useStopsGeoJSON(stops);
   /**
    * Convertimos las paradas (Stop[])
    * a un FeatureCollection<Point> compatible con Mapbox.
@@ -28,7 +34,6 @@ export function StopsLayer() {
    * Esta transformación se hace en un hook separado
    * para mantener este componente limpio.
    */
-  const geojson = useStopsGeoJSON(stopsMock);
 
   /**
    * Si no hay paradas, no renderizamos la capa.

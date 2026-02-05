@@ -16,7 +16,7 @@
 
 import { useMemo } from "react";
 import { FeatureCollection, Point } from "geojson";
-import { Stop } from "../types";
+import { Stop } from "../types/types";
 
 export function useStopsGeoJSON(stops: Stop[]): FeatureCollection<Point> {
   return useMemo(
@@ -44,7 +44,7 @@ export function useStopsGeoJSON(stops: Stop[]): FeatureCollection<Point> {
          */
         geometry: {
           type: "Point",
-          coordinates: [stop.longitude, stop.latitude],
+          coordinates: stop.coordinates,
         },
         /**
          * Properties

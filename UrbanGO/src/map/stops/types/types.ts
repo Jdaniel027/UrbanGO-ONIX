@@ -4,6 +4,5 @@ export interface Stop {
   id: string;
   name: string;
   category: StopCategory;
-  latitude: number;
-  longitude: number;
+  coordinates: [number, number];
 }
