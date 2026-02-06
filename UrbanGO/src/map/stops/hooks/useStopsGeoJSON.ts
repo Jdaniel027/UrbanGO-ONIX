@@ -32,6 +32,7 @@ export function useStopsGeoJSON(stops: Stop[]): FeatureCollection<Point> {
        * Cada parada se convierte en un Feature
        */
       features: stops.map((stop) => ({
+        id: stop.id,
         type: "Feature",
         /**
          * Geometry

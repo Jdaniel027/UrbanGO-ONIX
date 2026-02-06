@@ -14,12 +14,7 @@
  * ❌ Errores difíciles de rastrear
  */
 
-export type POICategory =
-  | "restaurant"
-  | "hospital"
-  | "school"
-  | "shop"
-  | "stop"; // paradas
+export type POICategory = "restaurant" | "hospital" | "school" | "shop";
 
 export type POIImportance = "high" | "medium" | "low";
 

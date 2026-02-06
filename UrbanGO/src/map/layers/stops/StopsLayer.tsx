@@ -17,7 +17,6 @@
  */
 
 import Mapbox from "@rnmapbox/maps";
-import { stopsMock } from "../../stops/data/stops.mock";
 import { useStopsGeoJSON } from "../../stops/hooks/useStopsGeoJSON";
 import { Stop } from "../../stops/types/types";
 

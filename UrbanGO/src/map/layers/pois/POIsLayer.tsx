@@ -13,8 +13,9 @@
  */
 
 import Mapbox from "@rnmapbox/maps";
-import { POIS_STYLE } from "../../pois/styles/poi.styles";
-import { POI, POICategory } from "../../pois/types/poi.types";
+import { POIS_STYLE } from "@/src/map/pois/styles/poi.styles";
+import { POI, POICategory } from "@/src/map/pois/types/poi.types";
+import { POI_COLORS } from "@/src/map/styles/mapStyles";
 
 interface POIsLayerProps {
   /** Lista de POIs ya procesados */
@@ -88,13 +89,35 @@ export function POIsLayer({ pois, visibleCategories }: POIsLayerProps) {
 
       <Mapbox.SymbolLayer
         id="pois-labels"
-        minZoomLevel={16}
+        minZoomLevel={16} // aquí controlas cuándo aparecen
         style={{
+          textFont: ["Open Sans Semibold", "Arial Unicode MS Bold"],
           textField: ["get", "name"],
           textSize: 12,
-          textOffset: [0, 1.3],
+
+          // 👇 COLOR DINÁMICO
+          textColor: [
+            "match",
+            ["get", "category"],
+            "restaurant",
+            "#F2A900",
+            "hospital",
+            "#1C6ED5",
+            "school",
+            "#2E8B57",
+            "shop",
+            "#F2A900",
+            "#1A1A1A", // default
+          ],
+
+          textHaloColor: "#FFFFFF",
+          textHaloWidth: 1,
+          textHaloBlur: 0.5,
+
           textAnchor: "top",
-          textOptional: true,
+          textOffset: [0, 1.2],
+          textAllowOverlap: false,
+          textIgnorePlacement: true,
         }}
       />
     </Mapbox.ShapeSource>

@@ -6,7 +6,18 @@ export function useVehicles() {
   const [vehicles, setVehicles] = useState<VehiclePosition[]>([]);
 
   useEffect(() => {
-    vehicleService.getVehicles().then(setVehicles);
+    let mounted = true;
+
+    async function load() {
+      const data = await vehicleService.getVehicles();
+      if (mounted) setVehicles(data);
+    }
+
+    load();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return vehicles;

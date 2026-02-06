@@ -23,7 +23,7 @@ export function splitMapEntities(data: MapEntityDTO[]): {
   stops: Stop[];
 } {
   if (!Array.isArray(data)) {
-    throw new Error("mapEntitiesMock no es un arreglo válido");
+    throw new Error("Map entities debe ser un arreglo válido");
   }
 
   const pois: POI[] = [];
@@ -31,16 +31,22 @@ export function splitMapEntities(data: MapEntityDTO[]): {
 
   for (const entity of data) {
     switch (entity.type) {
-      case "POI":
+      case "POI": {
         pois.push(mapPOIDTOToPOI(entity));
         break;
+      }
 
-      case "STOP":
+      case "STOP": {
         stops.push(mapStopDTOToStop(entity));
         break;
+      }
 
-      default:
-        console.warn("Entidad desconocida:", entity);
+      default: {
+        // Esto SOLO pasa si el contrato API se rompe
+        throw new Error(
+          `Tipo de entidad no soportado: ${(entity as any).type}`,
+        );
+      }
     }
   }
 

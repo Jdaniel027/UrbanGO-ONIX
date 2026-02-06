@@ -23,8 +23,8 @@ export interface POIDTO {
    * Categoría tal como la define el backend.
    * Ej: "restaurant", "hospital", "school"
    *
-   * ⚠️ Puede NO coincidir exactamente con POICategory,
-   * por eso se transforma en el mapper.
+   * Categoría cruda del backend.
+   * ⚠️ No se puede usar directamente sin validar.
    */
   category: string;
 

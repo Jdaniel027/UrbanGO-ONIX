@@ -1,5 +1,6 @@
 import { POI } from "../types/poi.types";
 import { POIDTO } from "../types/poi.dto";
+import { mapPOICategory } from "./poiCategory.mapper";
 
 /**
  * mapPOIDTOToPOI
@@ -25,13 +26,8 @@ export function mapPOIDTOToPOI(dto: POIDTO): POI {
     /** Nombre visible en mapa y listas */
     name: dto.name,
 
-    /**
-     * Cast temporal.
-     * En el futuro se recomienda:
-     * - Validar categorías
-     * - O mapear backend → POICategory
-     */
-    category: dto.category as any,
+    /** Categoría validada y segura */
+    category: mapPOICategory(dto.category),
 
     /**
      * Coordenadas en formato GeoJSON

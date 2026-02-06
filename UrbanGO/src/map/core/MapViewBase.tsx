@@ -60,7 +60,6 @@ export function MapViewBase({ mapMode }: MapViewBaseProps) {
     "hospital",
     "school",
     "shop",
-    "stop",
   ];
 
   return (
