@@ -38,6 +38,7 @@ import { MapMode } from "../core/mapMode.types";
 import { MAP_CONFIG_BY_MODE } from "../core/mapConfig";
 
 import { useMapData } from "../hooks/useMapData";
+import { useRoutes } from "../routes/hooks/useRoutes";
 
 // Inicializa Mapbox con el token definido en variables de entorno en el .env
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_TOKEN!);
@@ -51,6 +52,8 @@ export function MapViewBase({ mapMode }: MapViewBaseProps) {
 
   const config =
     MAP_CONFIG_BY_MODE[mapMode] ?? MAP_CONFIG_BY_MODE["SELECT_POINTS"];
+
+  const routes = useRoutes();
 
   if (loading || !config) return null;
 
@@ -98,17 +101,14 @@ export function MapViewBase({ mapMode }: MapViewBaseProps) {
           bus: require("@/assets/images/map/icons/light/bus.png"),
         }}
       />
+      {/* Capa de rutas */}
+      {config.showRoutes !== "NONE" && <RoutesLayer routes={routes} />}
       {/* Capa de POIs */}
       {config.showPois && (
         <POIsLayer pois={pois} visibleCategories={visibleCategories} />
       )}
       {/* Capa de paradas */}
       {config.showStops !== "NONE" && <StopsLayer stops={stops} />}
-      {/* Capa de rutas */}
-      {config.showRoutes !== "NONE" && (
-        <RoutesLayer />
-        // MULTIPLE o SINGLE según config
-      )}
       {/* Capa de vehículos */}
       {config.showVehicles && <VehicleLayer vehicles={mockVehicles} />}
       {/* Cámara inicial del mapa */}

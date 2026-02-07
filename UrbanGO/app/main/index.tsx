@@ -9,10 +9,11 @@ export default function Home() {
       <Text style={styles.title}>UrbanGO</Text>
       <Text>Selecciona tu ruta</Text>
 
-      {/* <Button
+      <Button
         title="Buscar ruta"
         onPress={() => setMapMode("ROUTE_SUGGESTION")}
-      /> */}
+      />
+      <Button title="Regresar" onPress={() => setMapMode("SELECT_POINTS")} />
     </View>
   );
 }

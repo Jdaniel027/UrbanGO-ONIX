@@ -62,6 +62,7 @@ export function VehicleLayer({ vehicles }: VehicleLayerProps) {
     >
       <Mapbox.SymbolLayer
         id="vehicles-layer"
+        minZoomLevel={13}
         style={{
           iconImage: "bus", // nombre registrado en <Mapbox.Images />
           iconSize: 0.9,
