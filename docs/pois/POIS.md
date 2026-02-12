@@ -201,22 +201,6 @@ Los POIs se renderizan SIEMPRE desde cache local.
 La API solo se usa para sincronización.
 
 
+---
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- **[Volver al README principal](../../README.md)**

@@ -18,7 +18,7 @@ export function useRoutes() {
   const [routes, setRoutes] = useState<Route[]>([]);
 
   useEffect(() => {
-    // 🔹 mock temporal
+    // mock temporal
     setRoutes(routesMock);
   }, []);
 
