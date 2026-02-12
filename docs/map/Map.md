@@ -208,7 +208,7 @@ Hooks generales:
 
 Además de las capas, el mapa se organiza por dominios:
 
-- `pois/` – Puntos de interés ([documentado en ](../pois/POIS.md)).
+- `pois/` – Puntos de interés ([Documentacion en POIS](../pois/POIS.md)).
 - `stops/` – Paradas de camión.
 - `routes/` – Rutas de transporte.
 - `vehicle/` – Vehículos en movimiento.
