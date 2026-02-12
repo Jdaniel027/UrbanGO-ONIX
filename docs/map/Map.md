@@ -26,47 +26,62 @@ El mapa está diseñado siguiendo el principio de **separación de responsabilid
 ```txt
 Mapa Base (persistente)
 ├─ Core (MapView)
-├─ Cámara
-├─ Ubicación del usuario
-├─ Capas (Rutas, Camiones)
-├─ Eventos
-├─ Estilos
+├─ camera
+├─ location
+├─ layers (Rutas, Camiones, POIs, Stops)
+├─ events
+├─ styles
 └─ Hooks
 ```
 
-##Estructura de archivos
+---
+
+## Estructura de archivos
 
 ```txt
 src/map/
-├─ core/
-│  └─ MapViewBase.tsx        → Contenedor principal del mapa
+├─ __mock__/                 # Datos de prueba para el mapa
+│   └─ mapEntities.mock.ts
 │
-├─ camera/
-│  └─ camera.config.ts       → Configuración inicial de cámara
+├─ camera/                   # Configuración de cámara
+│   └─ Camera.config.tsx
 │
-├─ location/
-│  ├─ UserLocation.tsx       → Render de la ubicación del usuario
-│  └─ useUserLocation.ts     → Lógica de permisos y GPS
+├─ core/                     # Núcleo del mapa
+│   └─ MapViewBase.tsx
 │
-├─ layers/
-│  ├─ buses/
-│  │  ├─ BusLayer.tsx        → Render de camiones
-│  │  └─ useBusData.ts       → Datos de camiones
-│  │
-│  └─ routes/
-│     ├─ RoutesLayer.tsx     → Render de rutas
-│     └─ routes.types.ts     → Tipos de rutas
+├─ data/                     # Adaptadores y mapeo genérico de entidades
+│   ├─ map.adapter.ts
+│   └─ map.mapper.ts
 │
-├─ events/
-│  └─ mapEvents.ts           → Eventos del mapa
-│
-├─ styles/
-│  └─ mapStyles.ts           → Estilos visuales del mapa
+├─ event/
+│   └─ mapEvent.ts           # Eventos globales del mapa
 │
 ├─ hooks/
-│  └─ useMapReady.ts         → Hooks generales del mapa
+│   └─ useMapData.ts         # Hook principal que orquesta datos del mapa
 │
-└─ index.ts                  → Punto de exportación del módulo
+├─ layers/                   # Capas visuales
+│   ├─ pois/POIsLayer.tsx
+│   ├─ routes/RoutesLayers.tsx
+│   ├─ stops/StopsLayer.tsx
+│   ├─ user/UserLayer.tsx
+│   └─ vehicle/VehicleLayer.tsx
+│
+├─ location/
+│   └─ UserLocation.tsx
+│
+├─ pois/                     # Dominio de POIs 
+├─ routes/                   # Dominio de rutas
+├─ stops/                    # Dominio de paradas
+├─ vehicle/                  # Dominio de vehículos
+│
+├─ styles/
+│   └─ mapStyles.ts          # Estilos visuales base del mapa
+│
+├─ types/
+│   ├─ mapEntity.base.dto.ts
+│   └─ mapEntity.dto.ts
+│
+└─ index.ts
 ```
 
 ---
@@ -88,9 +103,11 @@ Notas importantes:
 - Las pantallas se renderizan encima del mapa
 - No contiene lógica de negocio
 
+---
+
 ## Camera
 
-Archivo: camera/camera.tsx
+Archivo: camera/camera.config.tsx
 Define la vista inicial del mapa:
 - Zoom
 - Coordenadas iniciales
@@ -99,6 +116,8 @@ Define la vista inicial del mapa:
 
 > Las coordenadas usan el formato:
 > [longitud, latitud]
+
+---
 
 ## Ubicación del usuario
 
@@ -114,7 +133,9 @@ Usos comunes:
 - Navegación
 - Mostrar posición actual
 
-## Capas del mapa
+---
+
+## Capas del mapa / layers
 
 Las capas son componentes visuales puros.
 
@@ -138,6 +159,8 @@ Renderiza camiones/vehículos:
 - Actualización en tiempo real
 - Rotación según dirección
 
+---
+
 ## Eventos del mapa
 
 Archivo: events/mapEvents.ts
@@ -151,6 +174,8 @@ Permite reaccionar cuando:
 - El usuario mueve el mapa
 - Se pierde el seguimiento
 - Cambia la región visible
+
+---
 
 ## Estilos del mapa
 
@@ -166,6 +191,8 @@ Facilita:
 - Temas claros/oscuros
 - Mantenimiento del diseña
 
+---
+
 ## Hooks generales
 
 Hooks generales:
@@ -175,12 +202,29 @@ Hooks generales:
 
 > No contiene lógica específica de capas
 
+---
+
+## Dominios del mapa
+
+Además de las capas, el mapa se organiza por dominios:
+
+- `pois/` – Puntos de interés ([documentado en ](../pois/POIS.md)).
+- `stops/` – Paradas de camión.
+- `routes/` – Rutas de transporte.
+- `vehicle/` – Vehículos en movimiento.
+
+Cada dominio sigue un patrón similar: `api/`, `data/`, `repository/`, `services/`, `styles/`, `types/`, y expone datos listos para las capas del mapa.
+
+---
+
 ## Qué NO debe hacerse
 
 - ❌ No agregar lógica de negocio al mapa
 - ❌ No manejar autenticación
 - ❌ No consumir APIs directamente desde capas visuales
 - ❌ No renderizar pantallas dentro del mapa
+
+---
 
 ## Buenas prácticas
 
@@ -189,7 +233,9 @@ Hooks generales:
 - Los datos llegan desde servicios o estado global
 - El mapa solo representa información
 
-## ## Ciclo de vida del mapa
+---
+
+## Ciclo de vida del mapa
 
 - El mapa se monta **una sola vez** al entrar al flujo `/main`
 - No se desmonta al cambiar de pantalla
@@ -200,6 +246,8 @@ Esto permite:
 - Mantener estado del mapa (zoom, posición)
 - Evitar recargas innecesarias
 - Mejor rendimiento
+
+---
 
 ## Relación con el sistema de navegación
 
@@ -213,6 +261,8 @@ Jerarquía visual:
 Mapa (fondo)
 └─ Pantallas (encima)
 ```
+
+---
 
 ## Flujo de datos
 
@@ -228,6 +278,8 @@ El mapa es un componente **pasivo**.
 - Manejar lógica de negocio
 - Modificar estado global
 
+---
+
 ## Consideraciones de rendimiento
 
 - El mapa es un componente pesado
@@ -238,6 +290,8 @@ El mapa es un componente **pasivo**.
 Recomendaciones:
 - Usar memoización cuando sea necesario
 - Separar capas dinámicas y estáticas
+
+---
 
 ## Extensión futura del mapa
 
@@ -253,12 +307,42 @@ Cada nueva funcionalidad:
 - Vive en su propio archivo
 - Se monta dentro del MapViewBase
 
+---
+
 ## Errores comunes
 
 - Pantalla negra → falta de estilo o token inválido
 - Mapa no responde → MapView renderizado múltiples veces
 - Lags → demasiadas capas en un solo componente
 - Problemas Android → permisos de ubicación mal configurados
+
+---
+
+## Flujo de datos del mapa
+(Despues va a ser un diagrama visual)
+
+1. **Fuente de datos**
+   - Actualmente: `__mock__/mapEntities.mock.ts` devuelve una lista de `MapEntityDTO` mezclados (POI, STOP, VEHICLE, etc.).
+   - Futuro: llamadas reales a API.
+
+2. **Tipos genéricos (`types/`)**
+   - `mapEntity.dto.ts` y `mapEntity.base.dto.ts` definen cómo llegan las entidades desde backend/mocks.
+
+3. **Adaptadores genéricos (`data/`)**
+   - `map.mapper.ts` separa las entidades por tipo (POIs, Stops, Rutas, Vehículos).
+   - `map.adapter.ts` transforma estas entidades genéricas en estructuras que cada dominio entiende.
+
+4. **Dominios específicos (`pois/`, `stops/`, `routes/`, `vehicle/`)**
+   - Cada dominio mapea sus DTO a tipos propios (POI, Stop, Route, Vehicle) y expone datos listos para el mapa.
+
+5. **Hook principal (`useMapData.ts`)**
+   - Orquesta toda la cadena:
+     - Llama al mock o repositorios.
+     - Usa los mappers de `data/` y de cada dominio.
+     - Devuelve colecciones ya listas para las capas (`POIsLayer`, `StopsLayer`, etc.).
+
+6. **Capas (`layers/`)**
+   - Cada layer recibe solo los datos de su dominio en forma final (POI[], Stop[], etc.) y los pinta en el mapa.
 
 ---
 

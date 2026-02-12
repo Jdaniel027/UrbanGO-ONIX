@@ -23,7 +23,7 @@
 import Mapbox from "@rnmapbox/maps";
 import { StyleSheet } from "react-native";
 
-import { MapCamera } from "../camera/Camera";
+import { MapCamera } from "../camera/Camera.config";
 import { UserLocation } from "../location/UserLocation";
 
 import { POIsLayer } from "../layers/pois/POIsLayer";
