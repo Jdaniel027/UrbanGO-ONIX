@@ -29,7 +29,7 @@ Antes de realizar cualquier cambio, por favor revisa:
 - **[Setup para desarrolladores](./docs/setup/DEVELOPMENT_SETUP.md)**
 - **[Setup para líder (APK y nativo)](./docs/setup/LEADER_SETUP.md)**
 - **[Guía de Contribución](./docs/CONTRIBUTING.md)**
-- **[Obstaculos tecnicos](./docs/guides/CODING_STANDARDS.md)**
+- **[Obstaculos tecnicos](./docs/decisions/TECHNICAL_OBSTACLES.md)**
 - **[Dependencias del proyecto](./docs/DEPENDENCIES.md)**
 - **[Documentacion de mapbox](./docs/map/Map.md)**
 - **[Documentacion de POIS](./docs/pois/POIS.md)**
