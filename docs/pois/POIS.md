@@ -1,26 +1,21 @@
 # POIs (Points of Interest)
 
-Esta carpeta contiene **toda la arquitectura relacionada con los Puntos de Interés (POIs)** que se muestran en el mapa.
-
 El módulo de POIs está diseñado para crecer sin romperse cuando:
-- Aumenten los POIs (cientos o miles)
-- Se agreguen nuevas categorías
-- Se integren múltiples ciudades
-- Se conecte un backend real
 
----
-
-Para una visión general del proyecto, ver el [README.md](../../../../README.md)
+- Aumenten los POIs (cientos o miles).
+- Se agreguen nuevas categorías.
+- Se integren múltiples ciudades.
+- Se conecte un backend real.
 
 ---
 
 ## Objetivos del módulo
 
-- ✅ Mantener una **arquitectura escalable**
-- ✅ Separar **datos, lógica y renderizado**
-- ✅ Facilitar la integración con **API backend**
-- ✅ Evitar que el mapa se rompa cuando crezcan los datos
-- ✅ Permitir que frontend y backend trabajen en paralelo
+- ✅ Mantener una **arquitectura escalable**.
+- ✅ Separar **datos, mapeo y dominio**.
+- ✅ Facilitar la integración con **API backend**.
+- ✅ Evitar que el mapa se rompa cuando crezcan los datos.
+- ✅ Permitir que frontend y backend trabajen en paralelo.
 
 ---
 
@@ -32,10 +27,10 @@ Para una visión general del proyecto, ver el [README.md](../../../../README.md)
 
 Esto significa que los POIs:
 
-- ❌ NO se crean directamente en el mapa
-- ❌ NO se renderizan manualmente uno por uno
-- ❌ NO dependen del estilo del mapa
-- ❌ NO conocen ciudades, backend ni API
+- ❌ NO se crean directamente en el mapa.
+- ❌ NO se renderizan manualmente uno por uno.
+- ❌ NO dependen del estilo del mapa.
+- ❌ NO conocen ciudades, backend ni API.
 
 Todo el sistema pasa por **capas bien definidas**.
 
@@ -44,19 +39,29 @@ Todo el sistema pasa por **capas bien definidas**.
 ## Estructura de carpetas
 
 ```txt
-pois/
- ├─ api/
- │  └─ pois.api.ts
- ├─ services/
- │  └─ pois.service.ts
- ├─ data/
- │  └─ pois.mock.ts
- ├─ layers/
- │  └─ POIsLayer.tsx
- ├─ styles/
- │  └─ pois.styles.ts
- ├─ types/
-    └─ poi.types.ts
+src/map/pois/
+  ├─ api/
+  │   └─ poi.api.ts
+  ├─ data/
+  │   ├─ poi.data.ts
+  │   ├─ poi.mapper.ts
+  │   └─ poiCategory.mapper.ts
+  ├─ repository/
+  │   └─ pois.repository.ts
+  ├─ services/
+  │   └─ poi.service.ts
+  ├─ styles/
+  │   └─ poi.styles.ts
+  └─ types/
+      ├─ poi.dto.ts
+      └─ poi.types.ts
+```
+
+Además, existe un mock genérico del mapa:
+
+```txt
+src/map/__mock__/
+  └─ mapEntities.mock.ts
 ```
 
 ---
@@ -65,26 +70,26 @@ pois/
 
 ### types/ (CONTRATO DEL SISTEMA)
 
-**Archivo:** `poi.types.ts`
+**Archivos:** `poi.types.ts`, `poi.dto.ts`
 
-Define la estructura oficial de un POI.
-
-- Es el **contrato entre frontend y backend**
-- **NO debe romperse sin coordinación**
-- Cualquier cambio aquí impacta todo el sistema
+- POI y POICategory definen el modelo de dominio que usa el frontend (mapa, listas, hooks).
+- POIDTO representa cómo viene un POI desde el backend o fuentes externas.
 
 **IMPORTANTE**
 
-- Coordinates SIEMPRE es [longitud, latitud]
-- Category debe coincidir exactamente con los valores definidos
-- No agregar categorías sin registrar iconos y estilos
+- POI.coordinates es SIEMPRE [longitud, latitud].
+- POICategory solo permite categorías soportadas (restaurant, hospital, school, shop, etc.).
+- Cualquier cambio en POI o POIDTO debe coordinarse, porque impacta todo el flujo.
+
+---
 
 ### api/ (DEFINICIÓN DE ENDPOINTS)
 
-**Archivo:** `pois.api.ts`
+**Archivo:** `poi.api.ts`
 
-Define las rutas de la API.
-No contiene lógica ni fetch.
+- Define las rutas de la API (por ejemplo: /cities/:cityId/pois).
+- No hace fetch ni lógica.
+- Su único objetivo es centralizar URLs.
 
 ```ts
 export const POIS_API = {
@@ -92,75 +97,125 @@ export const POIS_API = {
 };
 ```
 
-> Si cambia la URL del backend, solo se modifica aquí.
+> Cuando cambie la URL del backend, solo se modifica aquí.
+
+---
 
 ### services/ (COMUNICACIÓN CON BACKEND)
 
-**Archivo:** `pois.service.ts`
+**Archivo:** `poi.service.ts`
 
-Encapsula la comunicación HTTP.
-- Maneja fetch o axios
-- Aplica headers, auth, cache
-- Devuelve datos ya tipados
+- Encapsula la comunicación HTTP real con el backend.
+- Usará los endpoints definidos en poi.api.ts.
+- Devuelve POIDTO[], nunca POI directamente.
 
-```ts
-export async function fetchPOIsByCity(cityId: string): Promise<POI[]> {
-  const res = await fetch(POIS_API.byCity(cityId));
-  return res.json();
-}
-```
+> Mientras el backend no exista, este archivo puede permanecer vacío
 
-> Nunca hacer fetch desde el mapa o las capas visuales.
+---
 
 ### data/ (MOCK / DATOS TEMPORALES)
 
-Archivo: pois.mock.ts
-- Usado mientras el backend no está listo
-- Permite avanzar frontend sin bloquearse
-- Debe eliminarse cuando la API esté estable
+Archivo: `poi.data.ts`, `poi.mapper.ts`, `poiCategory.mapper.ts`
 
-### Hooks del mapa (ORQUESTACIÓN)
+**poi.data.ts – Datos de dominio (mock de POI)**
 
-Los hooks NO viven dentro del módulo `pois`.
+- Contiene un arreglo de POI[] ya normalizados.
+- Sirve como fuente local simple cuando no quieres pasar por toda la cadena DTO → dominio.
+- Ideal para pruebas rápidas de estilos, zoom, iconos, etc.
 
-En este proyecto, los hooks están centralizados en:
+**poi.mapper.ts – DTO → Dominio** 
+Convierte de POIDTO (lo que viene de API/mocks genéricos) a POI:
 
-map/hooks/
+- Normaliza coordenadas a [lng, lat].
+- Valida y mapea la categoría mediante mapPOICategory.
+- Aplica valores por defecto (por ejemplo, importance: "high").
 
-Motivo:
-- El mapa es un sistema compuesto
-- Los hooks orquestan múltiples dominios (POIs, cámara, ubicación, eventos)
-- Evita duplicación y dependencias circulares
+**poiCategory.mapper.ts – Normalización de categorías**
 
-Ejemplo de hook consumidor de POIs:
+- Recibe una categoría cruda desde el backend ("food", "cafe", "clinic", etc.).
+- Devuelve una categoría válida de POICategory.
 
-map/hooks/useMapPOIs.ts
+Reglas:
+
+- Nunca se debe usar dto.category directamente en el mapa.
+- Si llega una categoría desconocida:
+  - En desarrollo se muestra un console.warn.
+  - En producción se usa una categoría segura por defecto ("shop").
+
+  ---
 
 ### layers/ (RENDERIZADO EN MAPBOX)
 
 **Archivo:** `POIsLayer.tsx`
 
 Responsabilidades:
-- Convertir POIs a GeoJSON
-- Renderizarlos con ShapeSource y SymbolLayer
-- Filtrar por categoría y zoom
+- Convertir `POI[]` a un `FeatureCollection` GeoJSON.
+- Definir cómo se dibujan los íconos y labels en el mapa.
+- Filtrar qué POIs se muestran según:
+  - `visibleCategories` (controlado por la UI).
+  - `importance` + nivel de zoom (high, medium, low).
 
-NO debe:
-- Hacer fetch
-- Tener datos hardcodeados
-- Conocer ciudades o backend
+Reglas:
+-  No hace fetch ni lee datos del backend.
+- No contiene datos hardcodeados de POIs.
+- No conoce ciudades ni detalles de la API; solo recibe `POI[]` ya procesados.
+
+> El campo `importance` de `POI` controla a qué zoom aparece cada categoría de importancia.  
+> La lógica de zoom vive en `POIsLayer.tsx`, no en el dominio.
+
+---
 
 ### styles/ (CONFIGURACIÓN VISUAL)
 
-**Archivo:** `pois.styles.ts`
+**Archivo:** `poi.styles.ts`
 
-Contiene solo valores visuales:
-- Tamaños
-- Zoom mínimo
-- Overlap
-- Escalado por zoom
+Solo contiene constantes visuales:
+- minZoom para mostrar POIs.
+- iconSize.
+- iconAllowOverlap, etc.
 
 > Permite ajustar diseño sin tocar lógica.
+
+---
+
+### Mock general del mapa
+
+**Archivo:** `src/map/__mock__/mapEntities.mock.ts`
+
+- Contiene una lista de entidades mixtas MapEntityDTO[] (POI y STOP).
+- Actualmente es la fuente principal de datos mientras el backend no está listo.
+- El pipeline típico es:
+
+```txt
+mapEntities.mock.ts (MapEntityDTO[])
+   ├─→ filtro por type === "POI"
+   └─→ mapPOIDTOToPOI(dto)  →  POI[]
+```
+
+> Cuando exista backend, este mock se puede desactivar sin tocar la arquitectura de POIs.
+
+Actualmente el hook de mapa lee `mapEntities.mock.ts`, filtra las entidades con `type === "POI"` y las pasa por `mapPOIDTOToPOI` antes de enviarlas a `POIsLayer`.
+
+---
+
+## Flujo de POIs y paradas
+
+El siguiente diagrama muestra el recorrido completo de los datos:
+
+1. Datos externos (API de Google / backend propio) llegan al servidor y se guardan en BD.
+2. El frontend consume una API propia (o mocks) y obtiene entidades mixtas (`MapEntityDTO`).
+3. Un hook de mapa separa POIs de paradas y entrega los datos a los mappers de cada dominio.
+4. El módulo de POIs:
+   - Mapea `POIDTO` → `POI` (`poi.mapper.ts`, `poiCategory.mapper.ts`).
+   - Genera estructuras GeoJSON.
+   - Envía los datos a `POIsLayer` para que Mapbox los pinte.
+5. El usuario ve POIs normalizados, con categorías y estilos consistentes.
+
+Diagrama del flujo:
+
+![Flujo de POIs y paradas](../assets/diagramas/Flujo_POIs_paradas.png)
+
+---
 
 ### Iconos de POIs
 
@@ -183,22 +238,29 @@ Regla:
 
 > El nombre del icono DEBE coincidir con `POICategory`.
 
+---
+
 ## Reglas de crecimiento del módulo
 
-- Agregar un POI NO debe requerir tocar capas ni estilos
-- Agregar una categoría requiere:
-  - Actualizar `POICategory`
-  - Registrar icono
-  - (Opcional) ajustar estilos
+Agregar un nuevo POI no debe requerir cambios en mappers ni estilos:
+- Si usas poi.data.ts, solo agrega un nuevo elemento POI.
+- Si usas backend, solo agrega un nuevo registro que cumpla el contrato POIDTO.
 
-Si alguna de estas reglas se rompe, la arquitectura debe revisarse.
+Agregar una nueva categoría requiere:
+- Actualizar POICategory en `poi.types.ts.`
+- Extender POI_CATEGORY_MAP en poiCategory.mapper.ts.
+- Registrar su icono en MapViewBase.
+- (Opcional) ajustar estilos en poi.styles.ts.
+
+> Si alguna de estas reglas se rompe, la arquitectura debe revisarse.
 
 ---
 
 ## Modo Offline
 
-Los POIs se renderizan SIEMPRE desde cache local.
-La API solo se usa para sincronización.
+- Los POIs se pueden renderizar desde fuentes locales (poi.data.ts o cache) sin depender de la API.
+- La API (cuando exista) solo se usará para sincronizar periódicamente.
+- Si no hay red, el mapa debe seguir mostrando los POIs más recientes disponibles.
 
 
 ---
