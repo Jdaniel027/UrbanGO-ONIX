@@ -26,9 +26,9 @@ El objetivo principal es optimizar el tiempo y la experiencia de traslado dentro
 Este proyecto sigue un flujo de trabajo y reglas claras para facilitar el trabajo en equipo y mantener la calidad del código.
 Antes de realizar cualquier cambio, por favor revisa:
 
-- **[CONTRIBUTING](./docs/CONTRIBUTING.md)**
+- **[Setup para desarrolladores](./docs/setup/DEVELOPMENT_SETUP.md)**
+- **[Setup para líder (APK y nativo)](./docs/setup/LEADER_SETUP.md)**
+- **[Guía de Contribución](./docs/CONTRIBUTING.md)**
 - **[Dependencias del proyecto](./docs/DEPENDENCIES.md)**
 - **[Documentacion de mapbox](./docs/map/Map.md)**
 - **[Documentacion de POIS](./docs/pois/POIS.md)**
-- **[Setup para líder (APK y nativo)](./docs/setup/LEADER_SETUP.md)**
-- **[Setup para desarrolladores](./docs/setup/DEVELOPMENT_SETUP.md)**
