@@ -65,5 +65,8 @@ Las reglas para crear PRs, checklist obligatorio y definición de terminado (DoD
 - Resolver conflictos de merge con cuidado
 - Preguntar antes de hacer cambios grandes
 
+---
+
+[Volver al README principal](../README.md)
 
 

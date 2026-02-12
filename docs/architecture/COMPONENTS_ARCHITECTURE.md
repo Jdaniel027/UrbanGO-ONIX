@@ -130,6 +130,5 @@ app/
 
 ---
 
-- **[Volver al README principal](../../README.md)**
-- **[Convenciones de Código](./CODING_STANDARDS.md)**
+- **[Volver a CONTRIBUTING](../CONTRIBUTING.md)**
 - **[Estructura del proyecto](./FOLDER_STRUCTURE.md)**

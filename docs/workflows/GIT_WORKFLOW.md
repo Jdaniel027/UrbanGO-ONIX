@@ -17,6 +17,14 @@ Para mantener un historial de cambios claro y entendible, se debe usar el siguie
 - **chore**: tareas de mantenimiento
 - **docs**: cambios en documentación
 
+### Ejemplo
+
+```bash
+git commit -m "feat: agregar pantalla de login"
+```
+
+---
+
 ## Objetivo del flujo
 
 - Reducir errores
@@ -116,3 +124,6 @@ git push origin feature/nombre-de-la-tarea
 - Se elimina la rama
   Esto mantiene el repositorio limpio y ordenado.
 
+---
+
+[Volver a CONTRIBUTING](../CONTRIBUTING.md)

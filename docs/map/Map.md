@@ -259,3 +259,7 @@ Cada nueva funcionalidad:
 - Mapa no responde → MapView renderizado múltiples veces
 - Lags → demasiadas capas en un solo componente
 - Problemas Android → permisos de ubicación mal configurados
+
+---
+
+- **[Volver al README principal](../../README.md)**
