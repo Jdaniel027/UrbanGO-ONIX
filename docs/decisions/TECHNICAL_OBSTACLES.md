@@ -30,5 +30,7 @@ Esta lista documenta problemas técnicos conocidos, sus causas, impacto y posibl
 - **Próximos pasos:**
   - Medir tiempos de build en diferentes máquinas y documentar configuración recomendada.
   - Evaluar uso de CI (Github Actions) para generar APKs y sacarlos de las laptops de los devs.
-  
+
 ---
+
+- **[Volver a CONTRIBUTING](../CONTRIBUTING.md)**
