@@ -32,3 +32,4 @@ Antes de realizar cualquier cambio, por favor revisa:
 - **[Dependencias del proyecto](./docs/DEPENDENCIES.md)**
 - **[Documentacion de mapbox](./docs/map/Map.md)**
 - **[Documentacion de POIS](./docs/pois/POIS.md)**
+- **[Documentacion de STOPS](./docs/stops/STOPS.md)**
