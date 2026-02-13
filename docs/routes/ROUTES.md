@@ -193,7 +193,7 @@ export const routesMock: Route[] = [
 
 ## Hook de obtención de rutas (hooks/useRoutes.ts)
 
-`useRoutes` es el punto de entrada para obtener rutas en la app.7
+`useRoutes` es el punto de entrada para obtener rutas en la app.
 
 **Hoy:**
 
@@ -339,6 +339,10 @@ const routes = useRoutes();
 ---
 
 ## Diagrama del flujo de rutas
+
+Este diagrama separa dos fases:
+- **Normalización (backend):** se ejecuta solo al registrar/actualizar una ruta; guarda rutas limpias en BD.
+- **Consumo (app):** la app solo descarga rutas limpias, las mapea al dominio y las renderiza.
 
 ![Flujo de routes](../assets/diagramas/Flujo_Routes.png)
 
