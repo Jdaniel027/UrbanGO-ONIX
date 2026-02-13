@@ -1,37 +1,6 @@
-# Security Policy - UrbanGO-ONIX
-
-## Reporting Security Vulnerabilities
+# Politicas de seguridad - UrbanGO-ONIX
 
 La seguridad de UrbanGO-ONIX es una prioridad. Si descubres una vulnerabilidad de seguridad, por favor repórtala de manera responsable.
-
-### Cómo Reportar
-
-**NO** abras un issue público de GitHub para vulnerabilidades de seguridad.
-
-En su lugar, envía un email a:
-- **Email:** security.urbango@gmail.com
-- **Asunto:** `[SECURITY] Descripción breve de la vulnerabilidad`
-
-> **Nota para el equipo:** Actualizar con el email oficial cuando esté disponible.
-
-### Información a Incluir
-
-Por favor incluye la siguiente información en tu reporte:
-
-1. **Descripción** de la vulnerabilidad
-2. **Steps to reproduce** (pasos para reproducir)
-3. **Impacto potencial** (qué puede ser explotado)
-4. **Versión afectada** de la app
-5. **Sugerencias de mitigación** (si las tienes)
-6. **Tu información de contacto** (para seguimiento)
-
-### Qué Esperar
-
-1. **Confirmación:** Responderemos dentro de 48 horas
-2. **Evaluación:** Evaluaremos la severidad y el impacto
-3. **Fix:** Trabajaremos en un fix (timeline depende de la severidad)
-4. **Disclosure:** Coordinaremos contigo el momento de disclosure público
-5. **Crédito:** Te daremos crédito en el CHANGELOG (si lo deseas)
 
 ---
 
@@ -322,4 +291,3 @@ npm update
 ---
 
 **Última actualización:** 2026-02-12  
-**Mantenedor:** Frontend Lead
