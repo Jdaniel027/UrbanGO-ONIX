@@ -21,7 +21,7 @@ El objetivo principal es optimizar el tiempo y la experiencia de traslado dentro
 
 ---
 
-## 📚 Documentación
+## Documentación
 
 Este proyecto sigue un flujo de trabajo y reglas claras para facilitar el trabajo en equipo y mantener la calidad del código.
 
