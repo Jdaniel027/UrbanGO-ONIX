@@ -34,3 +34,4 @@ Antes de realizar cualquier cambio, por favor revisa:
 - **[Documentacion de mapbox](./docs/map/Map.md)**
 - **[Documentacion de POIS](./docs/pois/POIS.md)**
 - **[Documentacion de STOPS](./docs/stops/STOPS.md)**
+- **[Documentacion de rutas](./docs/routes/ROUTES.md)**
