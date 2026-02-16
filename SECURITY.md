@@ -1,4 +1,4 @@
-# Politicas de seguridad - UrbanGO-ONIX
+# Politicas de seguridad
 
 La seguridad de UrbanGO-ONIX es una prioridad. Si descubres una vulnerabilidad de seguridad, por favor repórtala de manera responsable.
 
@@ -10,12 +10,12 @@ La seguridad de UrbanGO-ONIX es una prioridad. Si descubres una vulnerabilidad d
 
 #### 1. Variables de Entorno y Secrets
 
-** HACER:**
+**HACER:**
 - Usar `.env` para secrets locales (gitignored)
 - Usar variables de entorno de CI/CD para producción
 - Prefijo `EXPO_PUBLIC_` solo para valores públicos seguros
 
-** NO HACER:**
+**NO HACER:**
 - Hardcodear API keys en el código
 - Commitear archivos `.env`
 - Exponer tokens de autenticación en logs
@@ -31,13 +31,13 @@ const API_KEY = 'pk.eyJ1IjoibXl1c2VybmFtZSI...'; // NUNCA
 
 #### 2. Manejo de Tokens de Autenticación
 
-** HACER:**
+**HACER:**
 - Almacenar tokens en SecureStore (encriptado)
 - Implementar refresh token rotation
 - Expiración de tokens
 - Logout al detectar token inválido
 
-** NO HACER:**
+**NO HACER:**
 - Guardar tokens en AsyncStorage sin encriptar
 - Tokens sin expiración
 - Guardar contraseñas
@@ -55,7 +55,7 @@ await AsyncStorage.setItem('authToken', token);
 
 #### 3. Validación de Inputs
 
-** HACER:**
+**HACER:**
 - Validar todos los inputs del usuario
 - Sanitizar datos antes de enviar al backend
 - Validar coordenadas (rango válido)
@@ -79,13 +79,13 @@ if (!isValidCoordinate(origin.latitude, origin.longitude)) {
 
 #### 4. Comunicación con el Backend
 
-** HACER:**
+**HACER:**
 - Usar HTTPS en producción (nunca HTTP)
 - Implementar certificate pinning (opcional, alto security)
 - Timeout en requests (evitar requests colgados)
 - Retry logic con backoff exponencial
 
-** NO HACER:**
+**NO HACER:**
 - Enviar datos sensibles en query params (usar body)
 - Desactivar validación de certificados SSL
 - Requests sin timeout
@@ -109,13 +109,13 @@ const response = await fetch('http://api.urbango.com/routes?token=' + token);
 
 #### 5. Logging y Debugging
 
-** HACER:**
+**HACER:**
 - Logs solo en desarrollo
 - Remover `console.log` en producción
 - Usar herramientas de logging seguras (Sentry)
 - Logs genéricos para errores de autenticación
 
-** NO HACER:**
+**NO HACER:**
 - Loggear tokens, contraseñas o PII
 - `console.log(error)` con stack traces completos en producción
 - Mensajes de error detallados al usuario (info leak)
@@ -139,7 +139,7 @@ console.log('User data:', JSON.stringify(user)); // Puede contener PII
 
 #### 6. Permisos de la App
 
-** HACER:**
+**HACER:**
 - Solicitar permisos solo cuando se necesitan
 - Explicar por qué se necesita el permiso
 - Manejar el caso de permiso denegado gracefully
