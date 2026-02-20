@@ -23,37 +23,16 @@
  */
 
 import Mapbox from "@rnmapbox/maps";
+import { useLocationPermission } from "./useLocationPermission";
 
 export function UserLocation() {
+  const { granted } = useLocationPermission();
+  if (!granted) return null;
+
   return (
-    <Mapbox.UserLocation visible={true} showsUserHeadingIndicator={true} />
+    <Mapbox.LocationPuck
+      visible={true}
+      pulsing={{ isEnabled: true, radius: "accuracy" }}
+    />
   );
 }
-
-// Sustitulle el codigo por este para poder acceder a la ubicacion haslo cunado vallas a generar otro apk porque tienes que instalar
-// npx expo install expo-location
-
-// import Mapbox from "@rnmapbox/maps";
-// import * as Location from "expo-location";
-// import { useEffect, useState } from "react";
-
-// export function UserLocation() {
-//   const [hasPermission, setHasPermission] = useState(false);
-
-//   useEffect(() => {
-//     (async () => {
-//       const { status } = await Location.requestForegroundPermissionsAsync();
-//       setHasPermission(status === "granted");
-//     })();
-//   }, []);
-
-//   if (!hasPermission) return null;
-
-//   return (
-//     <Mapbox.UserLocation
-//       visible={true}
-//       showsUserHeadingIndicator={true}
-//       androidRenderMode="gps"
-//     />
-//   );
-// }

@@ -13,8 +13,11 @@
  */
 
 import Mapbox from "@rnmapbox/maps";
+import { useMapMode } from "@/src/map/core/state/MapModeContext";
 
 export function MapCamera() {
+  const { followUser } = useMapMode();
+
   return (
     <Mapbox.Camera
       /**
@@ -25,9 +28,9 @@ export function MapCamera() {
        * - 16+: navegación precisa
        */
       zoomLevel={12}
-      /** Zoom maximo que se puede hacer */
-      minZoomLevel={11}
       /** Zoom mimnimo que se puede hacer */
+      minZoomLevel={11}
+      /** Zoom maximo que se puede hacer */
       maxZoomLevel={18}
       /**
        * Coordenadas iniciales del mapa
@@ -40,6 +43,10 @@ export function MapCamera() {
       pitch={0}
       /** Animación suave al cargar el mapa */
       animationDuration={1000}
+      // Configuraciones de la ubicacion del usuario
+      followUserLocation={followUser}
+      followUserMode={Mapbox.UserTrackingMode.Follow}
+      followZoomLevel={16}
     />
   );
 }
