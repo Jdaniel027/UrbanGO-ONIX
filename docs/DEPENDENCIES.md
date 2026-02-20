@@ -56,11 +56,11 @@ Si una librería existe en `package.json` pero no aquí, **debe documentarse**.
 
 ## Mapas / Geolocalización
 
-| Librería          | Categoría | Propósito                                     | Usada en        | Agregada por | Fecha      |
-| ----------------- | --------- | --------------------------------------------- | --------------- | ------------ | ---------- |
-| @rnmapbox/maps    | Mapas     | Renderizado de mapas Mapbox nativo            | src/map         | Daniel       | 26-01-2026 |
-| expo-location     | Mapas     | Permisos y ubicación GPS del usuario          | src/map         | Daniel       | 26-01-2026 |
-| expo-dev-client   | Tooling   | Soporte para Dev Build con código nativo      | Global          | Daniel       | 26-01-2026 |
+| Librería          | Categoría | Propósito                                     | Usada en                 | Agregada por | Fecha      |
+| ----------------- | --------- | --------------------------------------------- | -------------------------| ------------ | ---------- |
+| @rnmapbox/maps    | Mapas     | Renderizado de mapas Mapbox nativo            | src/map                  | Daniel       | 26-01-2026 |
+| expo-location     | Mapas     | Permisos y ubicación GPS del usuario          | src/map/location         | Daniel       | 19-02-2026 |
+| expo-dev-client   | Tooling   | Soporte para Dev Build con código nativo      | Global                   | Daniel       | 26-01-2026 |
 
 
 ---
