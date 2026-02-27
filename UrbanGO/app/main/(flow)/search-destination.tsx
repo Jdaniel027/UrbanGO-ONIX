@@ -1,4 +1,4 @@
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -9,8 +9,6 @@ import {
   MapOptionItem,
   PlacesList,
 } from "@/src/components/main/flow/search-destination";
-
-import styles from "./search-destination.styles";
 
 export default function SearchDestinationScreen() {
   const router = useRouter();
@@ -40,3 +38,23 @@ export default function SearchDestinationScreen() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.4)",
+  },
+
+  sheet: {
+    height: "90%",
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    paddingHorizontal: 20,
+  },
+});

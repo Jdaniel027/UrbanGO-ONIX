@@ -1,5 +1,4 @@
-import { View, Text } from "react-native";
-import { styles } from "./select-destination.styles";
+import { View, Text, StyleSheet } from "react-native";
 
 import { useTripStore } from "@/src/store/trip.store";
 
@@ -13,3 +12,9 @@ export default function SelectDestinationScreen() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

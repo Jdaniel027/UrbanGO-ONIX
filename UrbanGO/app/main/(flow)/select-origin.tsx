@@ -1,5 +1,4 @@
-import { View, Text } from "react-native";
-import { styles } from "./select-origin.styles";
+import { View, Text, StyleSheet } from "react-native";
 
 export default function SelectOriginScreen() {
   return (
@@ -8,3 +7,9 @@ export default function SelectOriginScreen() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

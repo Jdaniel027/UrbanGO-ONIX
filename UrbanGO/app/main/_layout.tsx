@@ -10,13 +10,15 @@ function MainLayoutContent() {
   const { mapMode } = useMapMode();
 
   return (
-    <View style={styles.container}>
-      {/* MAPA GLOBAL */}
-      <MapViewBase mapMode={mapMode} />
+    <>
+      <View style={styles.container}>
+        {/* MAPA GLOBAL */}
+        <MapViewBase mapMode={mapMode} />
 
-      {/* PANTALLAS ENCIMA */}
-      <Slot />
-    </View>
+        {/* PANTALLAS ENCIMA */}
+        <Slot />
+      </View>
+    </>
   );
 }
 

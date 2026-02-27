@@ -1,5 +1,4 @@
-import { View, Text } from "react-native";
-import { styles } from "./index.styles";
+import { View, Text, StyleSheet } from "react-native";
 
 // Componentes relacionados con el flujo de selección de destino y navegación
 import {
@@ -26,3 +25,9 @@ export default function HomeScreen() {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
