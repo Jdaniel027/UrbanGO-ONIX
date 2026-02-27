@@ -1,92 +1,49 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  TextInput,
-} from "react-native";
-import { useTripStore } from "@/src/store/trip.store";
-import { useState } from "react";
-
-// Estado del componente
-type SheetState = "collapsed" | "expanded" | "search";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function DestinationSheet() {
-  const [sheetState, setSheetState] = useState<SheetState>("collapsed");
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
 
-  const setDestination = useTripStore((state) => state.setDestination);
-
-  const handleUseLocation = () => {
-    const mockCoordinates = {
-      latitude: 19.4326,
-      longitude: -99.1332,
-    };
-
-    setDestination(mockCoordinates);
-
-    console.log("Destino guardado:", mockCoordinates);
+  const handleGoToSearch = () => {
+    router.push("/main/(flow)/search-destination");
   };
 
   return (
-    <View style={styles.container}>
-      {sheetState === "collapsed" && (
-        <>
-          <Text style={styles.title}>Marque su destino</Text>
+    <View style={[styles.container, { paddingBottom: insets.bottom + 16 }]}>
+      {/* Drag handle */}
+      <View style={styles.handle} />
 
-          <TouchableOpacity style={styles.button} onPress={handleUseLocation}>
-            <Text style={styles.buttonText}>Usar esta ubicación</Text>
-          </TouchableOpacity>
+      {/* Título */}
+      <Text style={styles.title}>Marque su destino</Text>
+      <Text style={styles.subtitle}>
+        Arrastre el mapa para mover el marcador
+      </Text>
 
-          <TouchableOpacity
-            style={styles.secondaryButton}
-            onPress={() => setSheetState("expanded")}
-          >
-            <Text>Expandir</Text>
-          </TouchableOpacity>
-        </>
-      )}
+      {/* Input falso */}
+      <TouchableOpacity
+        style={styles.searchBox}
+        onPress={handleGoToSearch}
+        activeOpacity={0.7}
+      >
+        <Text style={styles.searchText}>¿A dónde quiere ir?</Text>
+        <Ionicons name="search" size={20} color="#555" />
+      </TouchableOpacity>
 
-      {sheetState === "expanded" && (
-        <>
-          <Text style={styles.title}>¿A dónde va?</Text>
-
-          <TouchableOpacity
-            style={styles.searchBox}
-            onPress={() => setSheetState("search")}
-          >
-            <Text style={{ color: "#888" }}>Toca para escribir destino</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.secondaryButton}
-            onPress={() => setSheetState("collapsed")}
-          >
-            <Text>Volver</Text>
-          </TouchableOpacity>
-        </>
-      )}
-
-      {sheetState === "search" && (
-        <>
-          <TextInput placeholder="Escribe tu destino..." style={styles.input} />
-
-          <TouchableOpacity
-            style={styles.secondaryButton}
-            onPress={() => setSheetState("expanded")}
-          >
-            <Text>Cancelar</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              console.log("Aquí luego irá navegación a select-destination");
-            }}
-          >
-            <Text style={styles.buttonText}>Elegir ubicación en el mapa</Text>
-          </TouchableOpacity>
-        </>
-      )}
+      {/* Botón gradiente */}
+      <TouchableOpacity activeOpacity={0.85} style={styles.buttonWrapper}>
+        <LinearGradient
+          colors={["#9FCDFF", "#419CFF"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Usar esta ubicación</Text>
+        </LinearGradient>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -97,45 +54,71 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: "100%",
     backgroundColor: "#fff",
-    padding: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    paddingHorizontal: 20,
+    paddingTop: 12,
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    // Sombra
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -3 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 10,
   },
+
+  handle: {
+    width: 40,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: "#E0E0E0",
+    alignSelf: "center",
+    marginBottom: 16,
+  },
+
   title: {
-    fontSize: 16,
-    fontWeight: "600",
-    marginBottom: 12,
+    fontSize: 22,
+    fontWeight: "700",
+    color: "#111",
+    marginBottom: 4,
   },
-  button: {
-    backgroundColor: "#000",
-    padding: 14,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#fff",
-    fontWeight: "600",
-  },
-  secondaryButton: {
-    marginTop: 12,
-    padding: 10,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    alignItems: "center",
+
+  subtitle: {
+    fontSize: 13,
+    color: "#888",
+    marginBottom: 18,
   },
 
   searchBox: {
-    backgroundColor: "#f2f2f2",
-    padding: 14,
-    borderRadius: 10,
-    marginBottom: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#F2F4F7",
+    borderRadius: 14,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    marginBottom: 14,
   },
 
-  input: {
-    backgroundColor: "#f2f2f2",
-    padding: 14,
-    borderRadius: 10,
-    marginBottom: 12,
+  searchText: {
+    color: "#999",
+    fontSize: 15,
+  },
+
+  buttonWrapper: {
+    borderRadius: 14,
+    overflow: "hidden",
+  },
+
+  button: {
+    paddingVertical: 16,
+    alignItems: "center",
+    borderRadius: 14,
+  },
+
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+    letterSpacing: 0.3,
   },
 });
