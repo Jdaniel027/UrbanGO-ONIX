@@ -63,7 +63,7 @@ Las reglas para crear PRs, checklist obligatorio y definición de terminado (DoD
 
 Antes de crear un issue, revisa la sección de troubleshooting:
 
-- [Troubleshooting](./troubleshooting/indice.md)
+- [Troubleshooting](./troubleshooting/index.md)
 
 ---
 
