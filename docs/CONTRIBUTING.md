@@ -59,6 +59,14 @@ Las reglas para crear PRs, checklist obligatorio y definición de terminado (DoD
 
 ---
 
+## Reporte de errores
+
+Antes de crear un issue, revisa la sección de troubleshooting:
+
+[Troubleshooting](./troubleshooting/index.md)
+
+---
+
 ## Comunicación del equipo
 - Avisar cuando se trabaje en archivos críticos
 - No modificar archivos ajenos sin avisar
