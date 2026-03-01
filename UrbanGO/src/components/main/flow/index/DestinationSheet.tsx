@@ -12,6 +12,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useUIStore } from "@/src/store/ui.store";
 
+// Componentes de search-destination
 import {
   LocationInput,
   SwapButton,
@@ -60,7 +61,7 @@ export default function DestinationSheet() {
   const insets = useSafeAreaInsets();
   const sheetRef = useRef<BottomSheet>(null);
 
-  // snapPoints[0] = home (32%), snapPoints[1] = search (90%)
+  // snapPoints[0] = home (30%), snapPoints[1] = search (90%)
   const snapPoints = ["30%", "90%"];
 
   // snapIndex: índice actual del sheet. Se actualiza cuando
