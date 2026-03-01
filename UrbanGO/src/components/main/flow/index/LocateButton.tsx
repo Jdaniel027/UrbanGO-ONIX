@@ -2,12 +2,12 @@ import { TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-export default function TopRightLocateButton() {
+export default function LocateButton() {
   const insets = useSafeAreaInsets();
 
   return (
     <TouchableOpacity style={[styles.button, { top: insets.top + 12 }]}>
-      <Ionicons name="locate" size={22} color="#419CFF" />
+      <Ionicons name="locate" size={26} color="#fff" />
     </TouchableOpacity>
   );
 }
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     width: 46,
     height: 46,
     borderRadius: 23,
-    backgroundColor: "#fff",
+    backgroundColor: "#9fcdff",
     justifyContent: "center",
     alignItems: "center",
     shadowColor: "#000",

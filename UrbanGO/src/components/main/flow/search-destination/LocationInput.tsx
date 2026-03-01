@@ -1,5 +1,4 @@
 import { View, TextInput, Text, TouchableOpacity } from "react-native";
-import styles from "@/app/main/(flow)/search-destination.styles";
 
 type Props = {
   type: "origin" | "destination";

@@ -6,19 +6,28 @@ import {
   useMapMode,
 } from "@/src/map/core/state/MapModeContext";
 
+/**
+ * MainLayoutContent
+ *
+ * Usamos Slot (no Stack) para que Expo Router no cree un View
+ * contenedor extra que bloquee los toques al mapa.
+ *
+ * Arquitectura de capas:
+ *   [ View flex:1 ]
+ *     ├── MapViewBase  → absoluteFill, siempre interactivo
+ *     └── Slot         → renderiza la pantalla activa sin wrapper
+ */
 function MainLayoutContent() {
   const { mapMode } = useMapMode();
 
   return (
-    <>
-      <View style={styles.container}>
-        {/* MAPA GLOBAL */}
-        <MapViewBase mapMode={mapMode} />
+    <View style={styles.container}>
+      {/* Mapa global — fondo de todas las pantallas de main */}
+      <MapViewBase mapMode={mapMode} />
 
-        {/* PANTALLAS ENCIMA */}
-        <Slot />
-      </View>
-    </>
+      {/* Pantalla activa encima del mapa */}
+      <Slot />
+    </View>
   );
 }
 
