@@ -9,6 +9,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
+import { useUIStore } from "@/src/store/ui.store";
 
 export type MenuItemConfig = {
   label: string;
@@ -16,20 +17,16 @@ export type MenuItemConfig = {
   route: string;
 };
 
-// Al llamar al componente MenuButton, se pueden pasar diferentes configuraciones de menú según la pantalla
-// Opciones para pantalla principal (mapa)
 const DEFAULT_ITEMS: MenuItemConfig[] = [
-  { label: "Rutas", icon: "bus-outline", route: "/main/(routes)" },
   { label: "Usuario", icon: "person-circle-outline", route: "/main/(profile)" },
+  { label: "Rutas", icon: "bus-outline", route: "/main/(routes)" },
 ];
 
-// Opciones para rutas
 export const MENU_ITEMS_ROUTES: MenuItemConfig[] = [
   { label: "Mapa", icon: "map-outline", route: "/main/(flow)" },
   { label: "Usuario", icon: "person-circle-outline", route: "/main/(profile)" },
 ];
 
-// Opciones para perfil
 export const MENU_ITEMS_PROFILE: MenuItemConfig[] = [
   { label: "Mapa", icon: "map-outline", route: "/main/(flow)" },
   { label: "Rutas", icon: "bus-outline", route: "/main/(routes)" },
@@ -43,6 +40,10 @@ export default function MenuButton({ items = DEFAULT_ITEMS }: Props) {
   const [open, setOpen] = useState(false);
   const insets = useSafeAreaInsets();
   const router = useRouter();
+
+  // Se oculta cuando el sheet está en snap 1 (modo search)
+  const sheetIndex = useUIStore((state) => state.sheetIndex);
+  if (sheetIndex !== 0) return null;
 
   const handleNavigate = (route: string) => {
     setOpen(false);
@@ -128,12 +129,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#F0F0F0",
   },
-  menuIcon: {
-    marginRight: 12,
-  },
-  menuLabel: {
-    fontSize: 15,
-    fontWeight: "500",
-    color: "#222",
-  },
+  menuIcon: { marginRight: 12 },
+  menuLabel: { fontSize: 15, fontWeight: "500", color: "#222" },
 });

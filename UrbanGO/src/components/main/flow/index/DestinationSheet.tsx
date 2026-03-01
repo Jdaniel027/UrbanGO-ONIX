@@ -3,13 +3,14 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import Animated, {
   useAnimatedStyle,
-  useSharedValue,
   interpolate,
   Extrapolation,
 } from "react-native-reanimated";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { useUIStore } from "@/src/store/ui.store";
 
 import {
   LocationInput,
@@ -55,40 +56,23 @@ const placeStyles = StyleSheet.create({
   address: { fontSize: 12, color: "#777" },
 });
 
-// ─────────────────────────────────────────────────────────────
-// Componente principal: DestinationSheet
-//
-// Arquitectura:
-//   BottomSheet (2 snaps)
-//     └── BottomSheetScrollView (único hijo)
-//           ├── Animated.View homeContent   → opacidad 1 en snap 0, 0 en snap 1
-//           └── Animated.View searchContent → opacidad 0 en snap 0, 1 en snap 1
-//
-// La transición suave se logra interpolando la opacidad de cada
-// contenido usando animatedIndex, que es un valor de Reanimated
-// que va de 0 a 1 durante la animación del sheet.
-//
-// Ambos contenidos están siempre montados para que el sheet
-// no colapse al cambiar de snap. La visibilidad se controla
-// solo con opacidad y pointerEvents.
-// ─────────────────────────────────────────────────────────────
 export default function DestinationSheet() {
   const insets = useSafeAreaInsets();
   const sheetRef = useRef<BottomSheet>(null);
 
   // snapPoints[0] = home (32%), snapPoints[1] = search (90%)
-  const snapPoints = ["32%", "90%"];
+  const snapPoints = ["30%", "90%"];
 
   // snapIndex: índice actual del sheet. Se actualiza cuando
   // la animación termina (onChange se dispara al llegar al snap).
   const [snapIndex, setSnapIndex] = useState(0);
 
-  // animatedIndex: SharedValue que @gorhom/bottom-sheet actualiza
-  // en tiempo real mientras el sheet se anima (0 = snap 0, 1 = snap 1).
-  const animatedIndex = useSharedValue(0);
+  const setSheetIndex = useUIStore((state) => state.setSheetIndex);
+  const animatedIndex = useUIStore((state) => state.animatedIndex);
 
   const handleSheetChange = useCallback((index: number) => {
     setSnapIndex(index);
+    setSheetIndex(index);
   }, []);
 
   const handleOpenSearch = () => sheetRef.current?.snapToIndex(1);
@@ -187,7 +171,7 @@ export default function DestinationSheet() {
           {/* ── SNAP 1 (search) — ocupa el espacio real del scroll ── */}
           <Animated.View style={searchAnimatedStyle}>
             <LocationInput type="origin" value="Mi ubicación" />
-            <LocationInput type="destination" value="" autoFocus />
+            <LocationInput type="destination" value="" />
             <SwapButton />
             <MapOptionItem />
             <PlaceItems />
