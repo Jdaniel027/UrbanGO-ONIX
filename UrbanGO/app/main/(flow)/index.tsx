@@ -1,10 +1,13 @@
 import { View, StyleSheet } from "react-native";
+
+// Componentes
 import {
   CenterMarker,
-  DestinationSheet,
   MenuButton,
   LocateButton,
-} from "@/src/components/main/flow/index/index";
+  DestinationSheet,
+} from "@/src/components/main/flow/Home/index";
+
 import { useTripStore } from "@/src/store/trip.store";
 
 import { useUIStore } from "@/src/store/ui.store";
