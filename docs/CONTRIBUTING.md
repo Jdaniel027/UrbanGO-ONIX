@@ -22,7 +22,7 @@ Este documento define de forma general cómo contribuir al proyecto UrbanGO y en
 
 La estructura completa del repositorio y las responsabilidades de cada carpeta se describen en:
 
-- [Estructura del proyecto](./architecture/FOLDER_STRUCTURE.md)
+- **[Estructura del proyecto](./architecture/FOLDER_STRUCTURE.md)**
 - [Arquitectura de componentes](./architecture/COMPONENTS_ARCHITECTURE.md)
 
 ---
