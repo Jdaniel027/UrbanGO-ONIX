@@ -1,71 +1,35 @@
 import { useRef, useState, useCallback } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
-import Animated, {
+import { StyleSheet, Keyboard } from "react-native";
+import BottomSheet, {
+  BottomSheetView,
+  BottomSheetScrollView,
+} from "@gorhom/bottom-sheet";
+import {
   useAnimatedStyle,
   interpolate,
   Extrapolation,
 } from "react-native-reanimated";
-import { LinearGradient } from "expo-linear-gradient";
-import { Ionicons } from "@expo/vector-icons";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-
 import { useUIStore } from "@/src/store/ui.store";
+import HomeView from "./HomeView";
+import SearchView from "./SearchView";
+import { sheetStyles } from "./styles";
 
-// Componentes de search-destination
-import {
-  LocationInput,
-  SwapButton,
-  MapOptionItem,
-} from "@/src/components/main/flow/search-destination";
-
-// ─────────────────────────────────────────────────────────────
-// Subcomponente: lista de lugares sugeridos
-// Usa View + map en lugar de FlatList para evitar el error de
-// listas virtualizadas anidadas dentro de BottomSheetScrollView.
-// ─────────────────────────────────────────────────────────────
-function PlaceItems() {
-  const MOCK_DATA = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  return (
-    <View>
-      {MOCK_DATA.map((item) => (
-        <View key={item} style={placeStyles.item}>
-          <Text style={placeStyles.star}>⭐</Text>
-          <View>
-            <Text style={placeStyles.name}>
-              Central Camionera Regional Guasave
-            </Text>
-            <Text style={placeStyles.address}>
-              Calle Jacarandas, Col del Bosque, 81040
-            </Text>
-          </View>
-        </View>
-      ))}
-    </View>
-  );
-}
-
-const placeStyles = StyleSheet.create({
-  item: {
-    flexDirection: "row",
-    paddingVertical: 14,
-    borderBottomWidth: 1,
-    borderColor: "#f0f0f0",
-  },
-  star: { marginRight: 10 },
-  name: { fontWeight: "600" },
-  address: { fontSize: 12, color: "#777" },
-});
-
+/**
+ * DestinationSheet
+ *
+ * Snap 0 (32%) → HomeView
+ * Snap 1 (90%) → SearchView
+ *
+ * Arquitectura de scroll:
+ *   BottomSheetView (flex:1, contenedor fijo)
+ *     ├── HomeView (absoluteFill, fade out al subir)
+ *     └── SearchView (flex:1)
+ *           ├── título + inputs + opciones → fijos, no scrollean
+ *           └── BottomSheetScrollView     → solo los POIs scrollean
+ */
 export default function DestinationSheet() {
-  const insets = useSafeAreaInsets();
   const sheetRef = useRef<BottomSheet>(null);
-
-  // snapPoints[0] = home (30%), snapPoints[1] = search (90%)
-  const snapPoints = ["30%", "90%"];
-
-  // snapIndex: índice actual del sheet. Se actualiza cuando
-  // la animación termina (onChange se dispara al llegar al snap).
+  const snapPoints = ["32%", "90%"];
   const [snapIndex, setSnapIndex] = useState(0);
 
   const setSheetIndex = useUIStore((state) => state.setSheetIndex);
@@ -74,13 +38,12 @@ export default function DestinationSheet() {
   const handleSheetChange = useCallback((index: number) => {
     setSnapIndex(index);
     setSheetIndex(index);
+    if (index === 0) Keyboard.dismiss();
   }, []);
 
   const handleOpenSearch = () => sheetRef.current?.snapToIndex(1);
   const handleConfirmLocation = () => console.log("Ubicación confirmada");
 
-  // ── Estilos animados ──────────────────────────────────────
-  // homeOpacity: 1 cuando animatedIndex=0 (snap 0), 0 cuando =1 (snap 1)
   const homeAnimatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
       animatedIndex.value,
@@ -106,141 +69,31 @@ export default function DestinationSheet() {
       ref={sheetRef}
       index={0}
       snapPoints={snapPoints}
-      handleIndicatorStyle={styles.handle}
-      backgroundStyle={styles.sheetBackground}
+      handleIndicatorStyle={sheetStyles.handle}
+      backgroundStyle={sheetStyles.sheetBackground}
       onChange={handleSheetChange}
-      // animatedIndex nos da el valor interpolado durante la animación
       animatedIndex={animatedIndex}
       enablePanDownToClose={false}
       enableOverDrag={false}
       enableDynamicSizing={false}
     >
-      {/**
-       * Único hijo del BottomSheet.
-       * scrollEnabled desactivado en snap 0 para que el gesto
-       * de arrastrar suba el sheet en lugar de hacer scroll.
-       */}
-      <BottomSheetScrollView
-        scrollEnabled={snapIndex !== 0}
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={[
-          styles.scrollContent,
-          { paddingBottom: insets.bottom + 16 },
-        ]}
-      >
-        {/* Contenedor relativo para superponer home y search */}
-        <View style={styles.contentWrapper}>
-          {/* ── SNAP 0 (home) — posición absoluta, desaparece al subir ── */}
-          <Animated.View
-            style={[
-              styles.homeContent,
-              StyleSheet.absoluteFillObject,
-              homeAnimatedStyle,
-            ]}
-          >
-            <Text style={styles.title}>Marque su destino</Text>
-            <Text style={styles.subtitle}>
-              Arrastre el mapa para mover el marcador
-            </Text>
-
-            <TouchableOpacity
-              style={styles.searchBox}
-              onPress={handleOpenSearch}
-              activeOpacity={0.7}
-            >
-              <Text style={styles.searchText}>¿A dónde quiere ir?</Text>
-              <Ionicons name="search" size={20} color="#555" />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              activeOpacity={0.85}
-              style={styles.buttonWrapper}
-              onPress={handleConfirmLocation}
-            >
-              <LinearGradient
-                colors={["#9FCDFF", "#419CFF"]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={styles.button}
-              >
-                <Text style={styles.buttonText}>Usar esta ubicación</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-          </Animated.View>
-
-          {/* ── SNAP 1 (search) — ocupa el espacio real del scroll ── */}
-          <Animated.View style={searchAnimatedStyle}>
-            <LocationInput type="origin" value="Mi ubicación" />
-            <LocationInput type="destination" value="" />
-            <SwapButton />
-            <MapOptionItem />
-            <PlaceItems />
-          </Animated.View>
-        </View>
-      </BottomSheetScrollView>
+      <BottomSheetView style={styles.container}>
+        <HomeView
+          animatedStyle={homeAnimatedStyle}
+          onOpenSearch={handleOpenSearch}
+          onConfirmLocation={handleConfirmLocation}
+        />
+        <SearchView
+          animatedStyle={searchAnimatedStyle}
+          ScrollViewComponent={BottomSheetScrollView}
+        />
+      </BottomSheetView>
     </BottomSheet>
   );
 }
 
 const styles = StyleSheet.create({
-  // Sheet base
-  sheetBackground: {
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 28,
-    borderTopRightRadius: 28,
-  },
-  handle: {
-    backgroundColor: "#E0E0E0",
-    width: 40,
-  },
-
-  // Contenedor del scroll
-  scrollContent: {
-    paddingHorizontal: 20,
-    paddingTop: 8,
-  },
-  // Wrapper relativo para que absoluteFillObject del home
-  // no afecte el layout del search
-  contentWrapper: {
+  container: {
     flex: 1,
-  },
-
-  // Snap 0
-  homeContent: {
-    alignItems: "center",
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: "700",
-    color: "#111",
-    textAlign: "center",
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 13,
-    color: "#888",
-    textAlign: "center",
-    marginBottom: 18,
-  },
-  searchBox: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: "#F2F4F7",
-    borderRadius: 14,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    marginBottom: 14,
-    width: "100%",
-  },
-  searchText: { color: "#999", fontSize: 15 },
-  buttonWrapper: { width: "100%", borderRadius: 14, overflow: "hidden" },
-  button: { paddingVertical: 16, alignItems: "center", borderRadius: 14 },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-    letterSpacing: 0.3,
   },
 });

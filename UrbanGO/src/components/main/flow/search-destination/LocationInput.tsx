@@ -1,46 +1,100 @@
-import { View, TextInput, Text, TouchableOpacity } from "react-native";
+import { useState } from "react";
+import { View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 type Props = {
   type: "origin" | "destination";
   value: string;
-  autoFocus?: boolean;
+  onChangeText?: (text: string) => void;
+  onFocus?: () => void;
 };
 
-export default function LocationInput({ type, value, autoFocus }: Props) {
+/**
+ * LocationInput
+ *
+ * Input de texto para origen o destino.
+ * - Fondo blanco con borde
+ * - Borde azul (#9FCDFF) cuando está enfocado, gris (#E8E8E8) cuando no
+ * - Punto verde para origen, rojo para destino
+ * - Botón X para limpiar, visible solo cuando hay texto
+ */
+export default function LocationInput({
+  type,
+  value,
+  onChangeText,
+  onFocus,
+}: Props) {
+  const [focused, setFocused] = useState(false);
   const isOrigin = type === "origin";
 
   return (
-    <View style={{ marginBottom: 12 }}>
+    <View
+      style={[styles.container, focused ? styles.focused : styles.unfocused]}
+    >
       <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          backgroundColor: "#f2f2f2",
-          borderRadius: 14,
-          paddingHorizontal: 14,
+        style={[
+          styles.dot,
+          { backgroundColor: isOrigin ? "#4CAF50" : "#FF3B30" },
+        ]}
+      />
+
+      <TextInput
+        style={styles.input}
+        value={value}
+        onChangeText={onChangeText}
+        placeholder={isOrigin ? "Punto de partida" : "¿A dónde va?"}
+        placeholderTextColor="#ADADAD"
+        onFocus={() => {
+          setFocused(true);
+          onFocus?.();
         }}
-      >
-        <View
-          style={{
-            width: 10,
-            height: 10,
-            borderRadius: 5,
-            backgroundColor: isOrigin ? "#4CAF50" : "#FF3B30",
-            marginRight: 10,
-          }}
-        />
+        onBlur={() => setFocused(false)}
+      />
 
-        <TextInput
-          defaultValue={value}
-          placeholder={isOrigin ? "Origen" : "Destino"}
-          style={{ flex: 1, paddingVertical: 14 }}
-          autoFocus={autoFocus}
-        />
-
-        <TouchableOpacity>
-          <Text style={{ color: "#999" }}>✕</Text>
+      {value.length > 0 && (
+        <TouchableOpacity
+          onPress={() => onChangeText?.("")}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <Ionicons name="close-circle" size={18} color="#C0C0C0" />
         </TouchableOpacity>
-      </View>
+      )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 13,
+    marginBottom: 10,
+    borderWidth: 1.5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.04,
+    shadowRadius: 4,
+    elevation: 1,
+  },
+  unfocused: {
+    borderColor: "#E8E8E8",
+  },
+  focused: {
+    borderColor: "#9FCDFF",
+  },
+  dot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginRight: 12,
+  },
+  input: {
+    flex: 1,
+    fontSize: 15,
+    color: "#111",
+    padding: 0,
+  },
+});
