@@ -2,6 +2,8 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 type Props = {
+  /** Solo visible cuando el input de origen está activo */
+  showUseMyLocation: boolean;
   onUseMyLocation: () => void;
   onChooseOnMap: () => void;
 };
@@ -9,36 +11,39 @@ type Props = {
 /**
  * QuickOptions
  *
- * Dos opciones rápidas debajo de los inputs:
+ * Opciones rápidas debajo de los inputs:
  *
- * - "Usar mi ubicación": pone la ubicación del usuario
- *   en el input que esté activo/enfocado.
+ * - "Usar mi ubicación": visible solo cuando el input de origen
+ *   está activo. No tiene sentido como opción de destino.
  *
- * - "Elegir en el mapa": navega a la pantalla de selección
- *   en el mapa (select-origin o select-destination según
- *   el input activo — lógica manejada por SearchView).
+ * - "Elegir en el mapa": siempre visible, navega a la pantalla
+ *   de selección según el input activo (origin o destination).
  */
 export default function QuickOptions({
+  showUseMyLocation,
   onUseMyLocation,
   onChooseOnMap,
 }: Props) {
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.option}
-        onPress={onUseMyLocation}
-        activeOpacity={0.6}
-      >
-        <Ionicons
-          name="locate-outline"
-          size={22}
-          color="#333"
-          style={styles.icon}
-        />
-        <Text style={styles.label}>Usar mi ubicación</Text>
-      </TouchableOpacity>
-
-      <View style={styles.divider} />
+      {showUseMyLocation && (
+        <>
+          <TouchableOpacity
+            style={styles.option}
+            onPress={onUseMyLocation}
+            activeOpacity={0.6}
+          >
+            <Ionicons
+              name="locate-outline"
+              size={22}
+              color="#333"
+              style={styles.icon}
+            />
+            <Text style={styles.label}>Usar mi ubicación</Text>
+          </TouchableOpacity>
+          <View style={styles.divider} />
+        </>
+      )}
 
       <TouchableOpacity
         style={styles.option}

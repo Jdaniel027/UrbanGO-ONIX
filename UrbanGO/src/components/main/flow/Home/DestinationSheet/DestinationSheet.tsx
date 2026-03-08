@@ -86,6 +86,8 @@ export default function DestinationSheet() {
         <SearchView
           animatedStyle={searchAnimatedStyle}
           ScrollViewComponent={BottomSheetScrollView}
+          onClose={() => sheetRef.current?.snapToIndex(0)}
+          isVisible={snapIndex === 1}
         />
       </BottomSheetView>
     </BottomSheet>

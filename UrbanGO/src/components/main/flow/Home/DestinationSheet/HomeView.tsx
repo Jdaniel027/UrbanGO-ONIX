@@ -95,10 +95,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 14,
     marginBottom: 14,
-    width: "100%",
+    width: "90%",
   },
   searchText: { color: "#999", fontSize: 15 },
-  buttonWrapper: { width: "100%", borderRadius: 14, overflow: "hidden" },
+  buttonWrapper: { width: "90%", borderRadius: 14, overflow: "hidden" },
   button: { paddingVertical: 16, alignItems: "center", borderRadius: 14 },
   buttonText: {
     color: "#fff",

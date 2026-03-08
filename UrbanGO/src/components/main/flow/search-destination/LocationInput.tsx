@@ -12,11 +12,11 @@ type Props = {
 /**
  * LocationInput
  *
- * Input de texto para origen o destino.
- * - Fondo blanco con borde
- * - Borde azul (#9FCDFF) cuando está enfocado, gris (#E8E8E8) cuando no
+ * Input tipo pill (border-radius alto) igual al diseño.
+ * - Fondo gris claro (#F2F4F7), sin sombra
+ * - Borde azul claro (#9FCDFF) al estar enfocado, transparente si no
  * - Punto verde para origen, rojo para destino
- * - Botón X para limpiar, visible solo cuando hay texto
+ * - Botón X circular solo cuando hay texto
  */
 export default function LocationInput({
   type,
@@ -51,12 +51,14 @@ export default function LocationInput({
         onBlur={() => setFocused(false)}
       />
 
+      {/* Botón X — solo visible si hay texto, igual al diseño */}
       {value.length > 0 && (
         <TouchableOpacity
           onPress={() => onChangeText?.("")}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          style={styles.clearButton}
         >
-          <Ionicons name="close-circle" size={18} color="#C0C0C0" />
+          <Ionicons name="close-circle" size={20} color="#ADADAD" />
         </TouchableOpacity>
       )}
     </View>
@@ -68,19 +70,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#fff",
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 13,
+    borderRadius: 50, // pill shape
+    paddingHorizontal: 16,
+    paddingVertical: 14,
     marginBottom: 10,
     borderWidth: 1.5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.04,
-    shadowRadius: 4,
-    elevation: 1,
   },
   unfocused: {
-    borderColor: "#E8E8E8",
+    borderColor: "#F2F4F7",
   },
   focused: {
     borderColor: "#9FCDFF",
@@ -96,5 +93,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#111",
     padding: 0,
+  },
+  clearButton: {
+    marginLeft: 8,
   },
 });
