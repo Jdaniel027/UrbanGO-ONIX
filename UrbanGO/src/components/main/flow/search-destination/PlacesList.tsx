@@ -1,6 +1,36 @@
+/**
+ * PlacesList.tsx
+ * ──────────────────────────────────────────────────────────────
+ * Lista de puntos de interés (POIs) de la ciudad.
+ *
+ * Datos:
+ *  Usa el mock `mapEntitiesMock` filtrando solo los items con
+ *  type === "POI". Los items type === "STOP" (paradas de camión)
+ *  no se muestran aquí ya que son elementos del mapa, no destinos.
+ *
+ *  TODO: reemplazar MOCK_PLACES con una llamada a API cuando esté lista.
+ *        El tipo Place ya tiene lat/lng para la integración futura.
+ *
+ * Scroll:
+ *  Este componente NO tiene ScrollView propio.
+ *  El scroll lo maneja BottomSheetScrollView en SearchView,
+ *  que es el único ScrollView en toda la jerarquía del snap 1.
+ *  Tener dos ScrollViews anidados causaría conflictos de gestos.
+ *
+ * Iconos:
+ *  Cada categoría tiene un emoji asignado en CATEGORY_ICON.
+ *  Si la categoría no está mapeada, se usa 📍 como fallback.
+ *  TODO: reemplazar emojis por íconos SVG cuando estén disponibles.
+ *
+ * Al presionar un item:
+ *  Se llama onSelectPlace con las coordenadas del POI.
+ *  SearchView usa esas coordenadas para mover la cámara del mapa.
+ */
+
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import mapEntitiesMock from "@/src/map/__mock__/mapEntities.mock";
 
+/** Tipo del lugar seleccionable — incluye coordenadas para mover la cámara */
 export type Place = {
   id: string;
   name: string;
@@ -9,7 +39,11 @@ export type Place = {
   lng: number;
 };
 
-// Filtramos solo los POIs del mock
+/**
+ * Filtramos solo los POIs del mock.
+ * Los STOPs son paradas de camión, no destinos para el usuario.
+ * TODO: reemplazar con llamada a API cuando esté disponible.
+ */
 const PLACES: Place[] = mapEntitiesMock
   .filter((e) => e.type === "POI")
   .map((e) => ({
@@ -21,8 +55,8 @@ const PLACES: Place[] = mapEntitiesMock
   }));
 
 /**
- * Icono por categoría del POI.
- * TODO: expandir con más categorías cuando se conecte la API.
+ * Mapa de categoría → emoji representativo.
+ * TODO: reemplazar con íconos SVG de la app cuando estén disponibles.
  */
 const CATEGORY_ICON: Record<string, string> = {
   restaurant: "🍽️",
@@ -33,34 +67,31 @@ const CATEGORY_ICON: Record<string, string> = {
 };
 
 type Props = {
+  /** Callback al presionar un POI — recibe las coordenadas para mover la cámara */
   onSelectPlace?: (place: Place) => void;
 };
 
-/**
- * PlacesList
- *
- * Lista de puntos de interés del mapa.
- * Usa los datos del mock mapEntitiesMock filtrando solo type === "POI".
- * TODO: reemplazar con llamada a API cuando esté disponible.
- *
- * Al presionar un item llama onSelectPlace con lat/lng para
- * que SearchView cierre el sheet y centre el mapa en ese punto.
- */
 export default function PlacesList({ onSelectPlace }: Props) {
   return (
     <View>
       {PLACES.map((place, index) => (
         <TouchableOpacity
           key={place.id}
-          style={[styles.item, index === PLACES.length - 1 && styles.lastItem]}
+          style={[
+            styles.item,
+            index === PLACES.length - 1 && styles.lastItem, // sin borde en el último
+          ]}
           onPress={() => onSelectPlace?.(place)}
           activeOpacity={0.6}
         >
+          {/* Icono de categoría — emoji o 📍 si no está mapeada */}
           <Text style={styles.icon}>
             {CATEGORY_ICON[place.category ?? ""] ?? "📍"}
           </Text>
+
           <View style={styles.texts}>
             <Text style={styles.name}>{place.name}</Text>
+            {/* Categoría en texto — solo si existe */}
             {place.category && (
               <Text style={styles.category}>{place.category}</Text>
             )}
@@ -80,7 +111,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#F0F0F0",
   },
   lastItem: {
-    borderBottomWidth: 0,
+    borderBottomWidth: 0, // sin línea divisoria en el último item
   },
   icon: {
     fontSize: 20,

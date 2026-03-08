@@ -12,13 +12,16 @@ type UIStore = {
   setSheetIndex: (index: number) => void;
   animatedIndex: SharedValue<number>;
 
-  /**
-   * selectedPoi: coordenadas del POI seleccionado desde el sheet.
-   * MapCamera observa este valor y mueve la cámara al cambiar.
-   * Se resetea a null después de que la cámara se mueve.
-   */
   selectedPoi: PoiLocation | null;
   setSelectedPoi: (poi: PoiLocation | null) => void;
+
+  /**
+   * locateUser: cuando se pone en true la cámara vuela
+   * a la ubicación del usuario. MapCamera lo resetea a false
+   * después de ejecutar el movimiento.
+   */
+  locateUser: boolean;
+  setLocateUser: (value: boolean) => void;
 };
 
 export const useUIStore = create<UIStore>(() => ({
@@ -27,4 +30,6 @@ export const useUIStore = create<UIStore>(() => ({
   animatedIndex: makeMutable(0),
   selectedPoi: null,
   setSelectedPoi: (poi) => useUIStore.setState({ selectedPoi: poi }),
+  locateUser: false,
+  setLocateUser: (value) => useUIStore.setState({ locateUser: value }),
 }));
