@@ -4,6 +4,7 @@ import Animated from "react-native-reanimated";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import { useUIStore } from "@/src/store/ui.store";
 import LocationInput from "@/src/components/main/flow/search-destination/LocationInput";
 import SwapButton from "@/src/components/main/flow/search-destination/SwapButton";
 import QuickOptions from "@/src/components/main/flow/search-destination/QuickOptions";
@@ -72,14 +73,17 @@ export default function SearchView({
     router.push(`/main/(flow)/select-${activeInput.current}` as any);
   };
 
+  const setSelectedPoi = useUIStore((state) => state.setSelectedPoi);
+
   /**
    * Al seleccionar un POI:
    * 1. Pone el nombre en el input de destino
-   * 2. Cierra el sheet para que el usuario vea el mapa
-   * TODO: centrar mapa en las coordenadas del lugar
+   * 2. Guarda las coordenadas en el store → MapCamera reacciona y hace zoom
+   * 3. Cierra el sheet para mostrar el mapa
    */
   const handleSelectPlace = (place: Place) => {
     setDestinationText(place.name);
+    setSelectedPoi({ lat: place.lat, lng: place.lng, name: place.name });
     onClose();
   };
 

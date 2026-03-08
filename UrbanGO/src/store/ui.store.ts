@@ -1,28 +1,30 @@
 import { create } from "zustand";
 import { makeMutable, SharedValue } from "react-native-reanimated";
 
-/**
- * ui.store
- *
- * Store global para estado de UI compartido entre componentes.
- *
- * sheetIndex   → índice actual del sheet (0 = home, 1 = search).
- *                Usado por MenuButton y LocateButton para ocultarse.
- *
- * animatedIndex → SharedValue de Reanimated que @gorhom/bottom-sheet
- *                 actualiza en tiempo real durante la animación (0→1).
- *                 Usado por HomeScreen para animar el overlay del mapa.
- */
+type PoiLocation = {
+  lat: number;
+  lng: number;
+  name: string;
+};
 
 type UIStore = {
   sheetIndex: number;
   setSheetIndex: (index: number) => void;
   animatedIndex: SharedValue<number>;
+
+  /**
+   * selectedPoi: coordenadas del POI seleccionado desde el sheet.
+   * MapCamera observa este valor y mueve la cámara al cambiar.
+   * Se resetea a null después de que la cámara se mueve.
+   */
+  selectedPoi: PoiLocation | null;
+  setSelectedPoi: (poi: PoiLocation | null) => void;
 };
 
 export const useUIStore = create<UIStore>(() => ({
   sheetIndex: 0,
   setSheetIndex: (index) => useUIStore.setState({ sheetIndex: index }),
-  // makeMutable crea un SharedValue fuera de un componente
   animatedIndex: makeMutable(0),
+  selectedPoi: null,
+  setSelectedPoi: (poi) => useUIStore.setState({ selectedPoi: poi }),
 }));

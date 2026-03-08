@@ -1,25 +1,44 @@
-/**
- * camera
- * ----------
- * Contiene la configuración de la cámara inicial del mapa.
- *
- * 🔹 Centraliza los valores de cámara para facilitar mantenimiento.
- * 🔹 Permite reutilizar o modificar fácilmente el punto inicial.
- * 🔹 Evita valores "hardcodeados" dentro de componentes visuales.
- *
- * Nota:
- * - Las coordenadas están en formato [longitud, latitud]
- * - El pitch controla la inclinación del mapa (3D)
- */
-
+import { useEffect, useRef } from "react";
 import Mapbox from "@rnmapbox/maps";
 import { useMapMode } from "@/src/map/core/state/MapModeContext";
+import { useUIStore } from "@/src/store/ui.store";
 
+/**
+ * MapCamera
+ *
+ * Cámara del mapa. Maneja dos comportamientos:
+ *
+ * 1. Posición inicial → Guasave, Sinaloa con zoom 12
+ * 2. Follow user → cuando followUser está activo en MapModeContext
+ * 3. POI seleccionado → cuando el usuario toca un POI en el sheet,
+ *    la cámara hace zoom y centra el mapa en ese punto.
+ *    Después de moverse resetea selectedPoi a null.
+ */
 export function MapCamera() {
   const { followUser } = useMapMode();
+  const cameraRef = useRef<Mapbox.Camera>(null);
+
+  const selectedPoi = useUIStore((state) => state.selectedPoi);
+  const setSelectedPoi = useUIStore((state) => state.setSelectedPoi);
+
+  useEffect(() => {
+    if (!selectedPoi) return;
+
+    // Mueve la cámara al POI con animación suave
+    cameraRef.current?.setCamera({
+      centerCoordinate: [selectedPoi.lng, selectedPoi.lat],
+      zoomLevel: 16,
+      animationDuration: 800,
+      animationMode: "flyTo",
+    });
+
+    // Resetea para no repetir el movimiento si el componente re-renderiza
+    setSelectedPoi(null);
+  }, [selectedPoi]);
 
   return (
     <Mapbox.Camera
+      ref={cameraRef}
       /**
        * Nivel de zoom inicial
        * Valores comunes:

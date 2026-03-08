@@ -1,43 +1,36 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import mapEntitiesMock from "@/src/map/__mock__/mapEntities.mock";
 
 export type Place = {
   id: string;
   name: string;
-  address: string;
+  category?: string;
+  lat: number;
+  lng: number;
 };
 
-const MOCK_PLACES: Place[] = [
-  {
-    id: "1",
-    name: "Central Camionera Regional Guasave",
-    address: "Calle Jacarandas, Col del Bosque, 81040\nGuasave, Sin., México",
-  },
-  {
-    id: "2",
-    name: "Plaza Comercial Los Arcos",
-    address: "Blvd. Rolando Arjona, 81000\nGuasave, Sin., México",
-  },
-  {
-    id: "3",
-    name: "Hospital General de Guasave",
-    address: "Calle Álvaro Obregón, Col. Centro, 81000\nGuasave, Sin., México",
-  },
-  {
-    id: "4",
-    name: "Parque Constitución",
-    address: "Calle Ángel Flores, Col. Centro, 81000\nGuasave, Sin., México",
-  },
-  {
-    id: "5",
-    name: "UADEO Campus Guasave",
-    address: "Calle Ángel Flores s/n, 81040\nGuasave, Sin., México",
-  },
-  {
-    id: "6",
-    name: "Mercado Municipal",
-    address: "Calle Zaragoza, Col. Centro, 81000\nGuasave, Sin., México",
-  },
-];
+// Filtramos solo los POIs del mock
+const PLACES: Place[] = mapEntitiesMock
+  .filter((e) => e.type === "POI")
+  .map((e) => ({
+    id: e.id,
+    name: e.name,
+    category: e.category,
+    lat: e.lat,
+    lng: e.lng,
+  }));
+
+/**
+ * Icono por categoría del POI.
+ * TODO: expandir con más categorías cuando se conecte la API.
+ */
+const CATEGORY_ICON: Record<string, string> = {
+  restaurant: "🍽️",
+  school: "🎓",
+  hospital: "🏥",
+  park: "🌳",
+  store: "🛒",
+};
 
 type Props = {
   onSelectPlace?: (place: Place) => void;
@@ -46,27 +39,31 @@ type Props = {
 /**
  * PlacesList
  *
- * Renderiza los items sin ScrollView propio.
- * El scroll lo maneja el BottomSheetScrollView en SearchView,
- * que es el único ScrollView en toda la jerarquía del snap 1.
+ * Lista de puntos de interés del mapa.
+ * Usa los datos del mock mapEntitiesMock filtrando solo type === "POI".
+ * TODO: reemplazar con llamada a API cuando esté disponible.
+ *
+ * Al presionar un item llama onSelectPlace con lat/lng para
+ * que SearchView cierre el sheet y centre el mapa en ese punto.
  */
 export default function PlacesList({ onSelectPlace }: Props) {
   return (
     <View>
-      {MOCK_PLACES.map((place, index) => (
+      {PLACES.map((place, index) => (
         <TouchableOpacity
           key={place.id}
-          style={[
-            styles.item,
-            index === MOCK_PLACES.length - 1 && styles.lastItem,
-          ]}
+          style={[styles.item, index === PLACES.length - 1 && styles.lastItem]}
           onPress={() => onSelectPlace?.(place)}
           activeOpacity={0.6}
         >
-          <Text style={styles.star}>⭐</Text>
+          <Text style={styles.icon}>
+            {CATEGORY_ICON[place.category ?? ""] ?? "📍"}
+          </Text>
           <View style={styles.texts}>
             <Text style={styles.name}>{place.name}</Text>
-            <Text style={styles.address}>{place.address}</Text>
+            {place.category && (
+              <Text style={styles.category}>{place.category}</Text>
+            )}
           </View>
         </TouchableOpacity>
       ))}
@@ -77,7 +74,7 @@ export default function PlacesList({ onSelectPlace }: Props) {
 const styles = StyleSheet.create({
   item: {
     flexDirection: "row",
-    alignItems: "flex-start",
+    alignItems: "center",
     paddingVertical: 14,
     borderBottomWidth: 1,
     borderBottomColor: "#F0F0F0",
@@ -85,10 +82,11 @@ const styles = StyleSheet.create({
   lastItem: {
     borderBottomWidth: 0,
   },
-  star: {
-    fontSize: 18,
-    marginRight: 12,
-    marginTop: 1,
+  icon: {
+    fontSize: 20,
+    marginRight: 14,
+    width: 28,
+    textAlign: "center",
   },
   texts: {
     flex: 1,
@@ -97,11 +95,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     color: "#111",
-    marginBottom: 3,
+    marginBottom: 2,
   },
-  address: {
+  category: {
     fontSize: 12,
-    color: "#888",
-    lineHeight: 17,
+    color: "#999",
+    textTransform: "capitalize",
   },
 });

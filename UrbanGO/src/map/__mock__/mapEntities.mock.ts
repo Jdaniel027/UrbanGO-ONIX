@@ -18,6 +18,14 @@ const mapEntitiesMock: MapEntityDTO[] = [
     lng: -108.486474,
   },
   {
+    type: "POI",
+    id: "poi-3",
+    name: "Uadeo 2",
+    category: "school",
+    lat: 25.568081,
+    lng: -108.496474,
+  },
+  {
     type: "STOP",
     id: "stop-1",
     name: "UadeO",
