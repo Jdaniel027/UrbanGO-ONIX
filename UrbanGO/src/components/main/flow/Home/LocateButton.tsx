@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
   button: {
     position: "absolute",
     right: 16,
-    width: 46,
-    height: 46,
+    width: 40,
+    height: 40,
     borderRadius: 23,
     backgroundColor: "#9fcdff", // color principal de la app
     justifyContent: "center",

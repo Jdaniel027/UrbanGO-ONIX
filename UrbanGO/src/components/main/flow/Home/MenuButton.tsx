@@ -18,13 +18,13 @@ export type MenuItemConfig = {
 };
 
 const DEFAULT_ITEMS: MenuItemConfig[] = [
-  { label: "Usuario", icon: "person-circle-outline", route: "/main/(profile)" },
   { label: "Rutas", icon: "bus-outline", route: "/main/(routes)" },
+  // { label: "Usuario", icon: "person-circle-outline", route: "/main/(profile)" },
 ];
 
 export const MENU_ITEMS_ROUTES: MenuItemConfig[] = [
   { label: "Mapa", icon: "map-outline", route: "/main/(flow)" },
-  { label: "Usuario", icon: "person-circle-outline", route: "/main/(profile)" },
+  // { label: "Usuario", icon: "person-circle-outline", route: "/main/(profile)" },
 ];
 
 export const MENU_ITEMS_PROFILE: MenuItemConfig[] = [
