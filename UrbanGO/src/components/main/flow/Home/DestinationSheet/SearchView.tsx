@@ -9,33 +9,34 @@
  *  [fijo]   Input de destino (punto rojo)
  *  [fijo]   SwapButton — intercambia origen y destino
  *  [fijo]   QuickOptions — "Usar mi ubicación" y "Elegir en el mapa"
- *  [scroll] PlacesList — puntos de interés de la ciudad
+ *  [scroll] PlacesList — puntos de interés filtrados por el input activo
  *
- * Por qué el ScrollView está en SearchView y no en PlacesList:
- *  PlacesList es solo una lista de items (View + map).
- *  El scroll lo maneja BottomSheetScrollView inyectado como prop
- *  desde DestinationSheet, para que @gorhom/bottom-sheet controle
- *  el gesto y no entre en conflicto con el arrastre del sheet.
+ * Comportamiento de búsqueda:
+ *  Cada input filtra los POIs de forma independiente según el texto escrito.
+ *  El input activo (enfocado) determina qué lista se muestra.
+ *  Si el input activo no tiene texto, se muestran todos los POIs.
  *
- * Lógica de "Usar mi ubicación":
- *  Solo visible cuando el input de origen está activo.
- *  No tiene sentido poner la ubicación actual como destino.
- *  Se resetea a visible cada vez que el snap 1 se abre (isVisible).
+ * Auto-foco:
+ *  Al abrirse el snap 1 (isVisible = true), se enfoca automáticamente
+ *  el input de origen y se abre el teclado usando una ref con .focus().
  *
  * Altura del scroll:
  *  Se calcula dinámicamente: 90% pantalla - altura del contenido fijo - handle.
- *  onLayout mide el contenido fijo cuando se renderiza por primera vez.
  */
 
 import { useState, useRef, useEffect } from "react";
-import { View, Text, StyleSheet, useWindowDimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  useWindowDimensions,
+  TextInput,
+} from "react-native";
 import Animated from "react-native-reanimated";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { useUIStore } from "@/src/store/ui.store";
-
-// Componentes del contenido del snap 1
 import {
   LocationInput,
   SwapButton,
@@ -58,8 +59,7 @@ type Props = {
   onClose: () => void;
   /**
    * true cuando el snap 1 está activo y visible.
-   * Resetea el estado interno (input activo, botón de ubicación)
-   * cada vez que el usuario abre el modo búsqueda.
+   * Dispara el auto-foco en el input de origen y resetea el estado interno.
    */
   isVisible: boolean;
 };
@@ -74,82 +74,87 @@ export default function SearchView({
   const insets = useSafeAreaInsets();
   const { height: screenHeight } = useWindowDimensions();
 
-  // Valores de los inputs de texto
   const [originText, setOriginText] = useState("Mi ubicación");
   const [destinationText, setDestinationText] = useState("");
-
-  // Altura medida del bloque fijo (título + inputs + opciones)
-  // Necesaria para calcular el espacio disponible para el scroll
   const [fixedHeight, setFixedHeight] = useState(0);
-
-  // Controla si "Usar mi ubicación" es visible
-  // Solo true cuando el input de origen está activo
   const [showUseMyLocation, setShowUseMyLocation] = useState(true);
 
   /**
-   * Input actualmente enfocado.
-   * useRef en lugar de useState para no provocar re-renders al cambiar.
-   * Solo necesitamos su valor en el momento de presionar los botones.
+   * activeInput: input actualmente enfocado.
+   * Determina cuál texto se usa para filtrar los POIs.
    */
   const activeInput = useRef<"origin" | "destination">("origin");
 
-  // Función para enviar coordenadas a MapCamera via store
+  /**
+   * Ref directa al TextInput de origen para poder llamar .focus()
+   * programáticamente cuando el snap 1 se abre.
+   * Se pasa como prop a LocationInput.
+   */
+  const originInputRef = useRef<TextInput | null>(null);
+
   const setSelectedPoi = useUIStore((state) => state.setSelectedPoi);
 
-  /**
-   * Altura disponible para la lista de POIs.
-   * 90% = altura del snap 1 | 24 = altura del handle del sheet
-   */
   const scrollHeight = screenHeight * 0.9 - fixedHeight - 24 - insets.bottom;
 
   /**
-   * Cada vez que el snap 1 se hace visible, resetear al estado inicial:
-   * - input activo → origen
-   * - "Usar mi ubicación" → visible
-   * Así el usuario siempre ve el mismo estado al abrir la búsqueda.
+   * Texto de búsqueda activo: el del input que está enfocado.
+   * Se usa para filtrar los POIs en PlacesList.
+   * Si el input activo es origen → filtra con originText.
+   * Si es destino → filtra con destinationText.
+   */
+  const activeSearchText =
+    activeInput.current === "origin" ? originText : destinationText;
+
+  /**
+   * Al abrirse el snap 1:
+   * 1. Resetear input activo a origen
+   * 2. Mostrar "Usar mi ubicación"
+   * 3. Enfocar el input de origen con un pequeño delay para que
+   *    la animación del sheet termine antes de abrir el teclado.
+   *    Sin el delay el teclado puede interferir con la animación.
    */
   useEffect(() => {
     if (isVisible) {
       activeInput.current = "origin";
       setShowUseMyLocation(true);
+
+      // Delay de 300ms para esperar que el sheet termine de animarse
+      const timer = setTimeout(() => {
+        originInputRef.current?.focus();
+      }, 300);
+
+      return () => clearTimeout(timer);
     }
   }, [isVisible]);
 
   // ── Handlers ────────────────────────────────────────────────
 
-  /** Intercambia el texto de los inputs de origen y destino */
   const handleSwap = () => {
     const prev = originText;
     setOriginText(destinationText);
     setDestinationText(prev);
   };
 
-  /**
-   * Pone "Mi ubicación" en el input de origen.
-   * Solo se llama desde QuickOptions cuando origen está activo.
-   * TODO: reemplazar con coordenadas GPS reales.
-   */
   const handleUseMyLocation = () => {
     setOriginText("Mi ubicación");
   };
 
-  /**
-   * Navega a la pantalla de selección en el mapa.
-   * La ruta varía según el input activo (origin o destination).
-   * TODO: implementar rutas select-origin y select-destination.
-   */
   const handleChooseOnMap = () => {
     router.push(`/main/(flow)/select-${activeInput.current}` as any);
   };
 
   /**
-   * Al seleccionar un POI de la lista:
-   * 1. Pone el nombre en el input de destino
-   * 2. Guarda las coordenadas en UIStore → MapCamera reacciona y hace zoom
-   * 3. Cierra el sheet para que el usuario vea el mapa
+   * Al seleccionar un POI:
+   * 1. Pone el nombre en el input activo (origen o destino según corresponda)
+   * 2. Envía las coordenadas al store → MapCamera hace zoom
+   * 3. Cierra el sheet
    */
   const handleSelectPlace = (place: Place) => {
-    setDestinationText(place.name);
+    if (activeInput.current === "origin") {
+      setOriginText(place.name);
+    } else {
+      setDestinationText(place.name);
+    }
     setSelectedPoi({ lat: place.lat, lng: place.lng, name: place.name });
     onClose();
   };
@@ -166,25 +171,37 @@ export default function SearchView({
       >
         <Text style={styles.title}>¿A dónde va?</Text>
 
-        {/* Inputs con SwapButton posicionado a la derecha */}
         <View style={styles.inputsWrapper}>
           <View style={styles.inputs}>
+            {/*
+              inputRef solo en origen para el auto-foco.
+              Al escribir en cualquier input se actualiza activeInput
+              y se re-filtran los POIs en tiempo real.
+            */}
             <LocationInput
               type="origin"
               value={originText}
-              onChangeText={setOriginText}
+              onChangeText={(text) => {
+                setOriginText(text);
+                // Al escribir, asegurar que el input activo es origen
+                activeInput.current = "origin";
+              }}
               onFocus={() => {
                 activeInput.current = "origin";
-                setShowUseMyLocation(true); // mostrar al enfocar origen
+                setShowUseMyLocation(true);
               }}
+              inputRef={originInputRef}
             />
             <LocationInput
               type="destination"
               value={destinationText}
-              onChangeText={setDestinationText}
+              onChangeText={(text) => {
+                setDestinationText(text);
+                activeInput.current = "destination";
+              }}
               onFocus={() => {
                 activeInput.current = "destination";
-                setShowUseMyLocation(false); // ocultar al enfocar destino
+                setShowUseMyLocation(false);
               }}
             />
           </View>
@@ -197,22 +214,20 @@ export default function SearchView({
           onChooseOnMap={handleChooseOnMap}
         />
 
-        {/* Separador visual entre opciones y lista de POIs */}
         <View style={styles.divider} />
       </View>
 
-      {/*
-        Único ScrollView del snap 1.
-        Altura explícita calculada dinámicamente para que
-        @gorhom/bottom-sheet sepa cuánto contenido hay scrolleable.
-      */}
+      {/* Solo los POIs scrollean, filtrados por el texto del input activo */}
       <ScrollViewComponent
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ paddingBottom: 8 }}
         style={{ height: scrollHeight }}
       >
-        <PlacesList onSelectPlace={handleSelectPlace} />
+        <PlacesList
+          onSelectPlace={handleSelectPlace}
+          searchText={activeSearchText}
+        />
       </ScrollViewComponent>
     </Animated.View>
   );
@@ -224,9 +239,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 4,
   },
-  fixedContent: {
-    // No flex — solo ocupa la altura que necesita su contenido
-  },
+  fixedContent: {},
   title: {
     fontSize: 20,
     fontWeight: "700",
@@ -242,7 +255,7 @@ const styles = StyleSheet.create({
   },
   inputs: {
     flex: 1,
-    paddingRight: 36, // espacio para el SwapButton posicionado en absolute
+    paddingRight: 36,
   },
   divider: {
     height: 3,

@@ -3,34 +3,27 @@
  * ──────────────────────────────────────────────────────────────
  * Lista de puntos de interés (POIs) de la ciudad.
  *
- * Datos:
- *  Usa el mock `mapEntitiesMock` filtrando solo los items con
- *  type === "POI". Los items type === "STOP" (paradas de camión)
- *  no se muestran aquí ya que son elementos del mapa, no destinos.
- *
- *  TODO: reemplazar MOCK_PLACES con una llamada a API cuando esté lista.
- *        El tipo Place ya tiene lat/lng para la integración futura.
+ * Filtrado:
+ *  Recibe `searchText` desde SearchView (el texto del input activo).
+ *  Filtra los POIs cuyo nombre contenga ese texto (case-insensitive).
+ *  Si searchText está vacío, muestra todos los POIs.
+ *  Si no hay resultados, muestra un mensaje de "sin resultados".
  *
  * Scroll:
  *  Este componente NO tiene ScrollView propio.
- *  El scroll lo maneja BottomSheetScrollView en SearchView,
- *  que es el único ScrollView en toda la jerarquía del snap 1.
- *  Tener dos ScrollViews anidados causaría conflictos de gestos.
+ *  El scroll lo maneja BottomSheetScrollView en SearchView.
  *
- * Iconos:
- *  Cada categoría tiene un emoji asignado en CATEGORY_ICON.
- *  Si la categoría no está mapeada, se usa 📍 como fallback.
- *  TODO: reemplazar emojis por íconos SVG cuando estén disponibles.
+ * Datos:
+ *  Usa mapEntitiesMock filtrando solo type === "POI".
+ *  TODO: reemplazar con llamada a API cuando esté disponible.
  *
- * Al presionar un item:
- *  Se llama onSelectPlace con las coordenadas del POI.
- *  SearchView usa esas coordenadas para mover la cámara del mapa.
+ * Ruta del archivo:
+ *  src/components/main/flow/search-destination/PlacesList.tsx
  */
 
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import mapEntitiesMock from "@/src/map/__mock__/mapEntities.mock";
 
-/** Tipo del lugar seleccionable — incluye coordenadas para mover la cámara */
 export type Place = {
   id: string;
   name: string;
@@ -39,12 +32,8 @@ export type Place = {
   lng: number;
 };
 
-/**
- * Filtramos solo los POIs del mock.
- * Los STOPs son paradas de camión, no destinos para el usuario.
- * TODO: reemplazar con llamada a API cuando esté disponible.
- */
-const PLACES: Place[] = mapEntitiesMock
+// Todos los POIs del mock — se filtran en tiempo real según searchText
+const ALL_PLACES: Place[] = mapEntitiesMock
   .filter((e) => e.type === "POI")
   .map((e) => ({
     id: e.id,
@@ -54,10 +43,6 @@ const PLACES: Place[] = mapEntitiesMock
     lng: e.lng,
   }));
 
-/**
- * Mapa de categoría → emoji representativo.
- * TODO: reemplazar con íconos SVG de la app cuando estén disponibles.
- */
 const CATEGORY_ICON: Record<string, string> = {
   restaurant: "🍽️",
   school: "🎓",
@@ -67,31 +52,59 @@ const CATEGORY_ICON: Record<string, string> = {
 };
 
 type Props = {
-  /** Callback al presionar un POI — recibe las coordenadas para mover la cámara */
   onSelectPlace?: (place: Place) => void;
+  /**
+   * Texto para filtrar los POIs en tiempo real.
+   * Viene del input activo en SearchView.
+   * Si está vacío o es solo espacios, se muestran todos.
+   */
+  searchText?: string;
 };
 
-export default function PlacesList({ onSelectPlace }: Props) {
+export default function PlacesList({ onSelectPlace, searchText = "" }: Props) {
+  /**
+   * Filtrado case-insensitive por nombre del POI.
+   * normalize("NFD") + replace elimina acentos para que
+   * "uadeo" encuentre "Uadeo" y "cafe" encuentre "Café".
+   */
+  const normalize = (str: string) =>
+    str
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+
+  const filtered = searchText.trim()
+    ? ALL_PLACES.filter((p) =>
+        normalize(p.name).includes(normalize(searchText)),
+      )
+    : ALL_PLACES;
+
+  // Sin resultados — mostrar mensaje en lugar de lista vacía
+  if (filtered.length === 0) {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}>Sin resultados para "{searchText}"</Text>
+      </View>
+    );
+  }
+
   return (
     <View>
-      {PLACES.map((place, index) => (
+      {filtered.map((place, index) => (
         <TouchableOpacity
           key={place.id}
           style={[
             styles.item,
-            index === PLACES.length - 1 && styles.lastItem, // sin borde en el último
+            index === filtered.length - 1 && styles.lastItem,
           ]}
           onPress={() => onSelectPlace?.(place)}
           activeOpacity={0.6}
         >
-          {/* Icono de categoría — emoji o 📍 si no está mapeada */}
           <Text style={styles.icon}>
             {CATEGORY_ICON[place.category ?? ""] ?? "📍"}
           </Text>
-
           <View style={styles.texts}>
             <Text style={styles.name}>{place.name}</Text>
-            {/* Categoría en texto — solo si existe */}
             {place.category && (
               <Text style={styles.category}>{place.category}</Text>
             )}
@@ -111,7 +124,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#F0F0F0",
   },
   lastItem: {
-    borderBottomWidth: 0, // sin línea divisoria en el último item
+    borderBottomWidth: 0,
   },
   icon: {
     fontSize: 20,
@@ -132,5 +145,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#999",
     textTransform: "capitalize",
+  },
+  emptyContainer: {
+    paddingVertical: 32,
+    alignItems: "center",
+  },
+  emptyText: {
+    fontSize: 14,
+    color: "#ADADAD",
   },
 });

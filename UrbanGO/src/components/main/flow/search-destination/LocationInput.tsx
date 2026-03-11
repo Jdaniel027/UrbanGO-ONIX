@@ -3,22 +3,23 @@
  * ──────────────────────────────────────────────────────────────
  * Input de texto para ingresar origen o destino de un viaje.
  *
- * Diseño tipo "pill" (cápsula):
- *  - Fondo blanco (#fff), sin sombra
+ * Diseño tipo "pill" (cápsula) igual al mockup de la app:
+ *  - Fondo gris claro (#F2F4F7), sin sombra
  *  - Borde azul claro (#9FCDFF) cuando está enfocado
- *  - Borde gris claro (#D3D3D3) cuando no está enfocado
+ *  - Borde transparente cuando no está enfocado
  *  - Punto de color a la izquierda: verde = origen, rojo = destino
  *  - Botón X circular a la derecha, solo visible cuando hay texto
  *
  * Props:
- *  - type: "origin" | "destination" → determina color del punto y placeholder
+ *  - type: "origin" | "destination"
  *  - value: texto actual del input
  *  - onChangeText: callback al escribir
- *  - onFocus: callback al tocar el input (usado por SearchView para
- *    saber cuál input está activo y mostrar/ocultar "Usar mi ubicación"
+ *  - onFocus: callback al tocar el input
+ *  - inputRef: ref externa opcional para controlar el foco programáticamente
+ *    (usado por SearchView para auto-enfocar al abrir el snap 1)
  */
 
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import { View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -27,6 +28,8 @@ type Props = {
   value: string;
   onChangeText?: (text: string) => void;
   onFocus?: () => void;
+  /** Ref externa para controlar el foco programáticamente */
+  inputRef?: React.RefObject<TextInput | null>;
 };
 
 export default function LocationInput({
@@ -34,17 +37,15 @@ export default function LocationInput({
   value,
   onChangeText,
   onFocus,
+  inputRef,
 }: Props) {
-  // Estado local de foco para cambiar el borde del input
   const [focused, setFocused] = useState(false);
-
   const isOrigin = type === "origin";
 
   return (
     <View
       style={[styles.container, focused ? styles.focused : styles.unfocused]}
     >
-      {/* Indicador de tipo: verde para origen, rojo para destino */}
       <View
         style={[
           styles.dot,
@@ -53,6 +54,7 @@ export default function LocationInput({
       />
 
       <TextInput
+        ref={inputRef} // permite a SearchView llamar .focus() externamente
         style={styles.input}
         value={value}
         onChangeText={onChangeText}
@@ -60,12 +62,11 @@ export default function LocationInput({
         placeholderTextColor="#ADADAD"
         onFocus={() => {
           setFocused(true);
-          onFocus?.(); // notificar a SearchView qué input está activo
+          onFocus?.();
         }}
         onBlur={() => setFocused(false)}
       />
 
-      {/* Botón limpiar — solo visible si hay texto escrito */}
       {value.length > 0 && (
         <TouchableOpacity
           onPress={() => onChangeText?.("")}
@@ -84,17 +85,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#fff",
-    borderRadius: 50, // forma pill/cápsula
+    borderRadius: 50,
     paddingHorizontal: 16,
     paddingVertical: 14,
     marginBottom: 10,
     borderWidth: 1.5,
   },
   unfocused: {
-    borderColor: "#F2F4F7", // sin borde cuando no está activo
+    borderColor: "#F2F4F7",
   },
   focused: {
-    borderColor: "#9FCDFF", // azul claro de la app al estar activo
+    borderColor: "#9FCDFF",
   },
   dot: {
     width: 10,
